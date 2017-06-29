@@ -4,15 +4,10 @@
   "description": "Nodejs + TypeScript + Swagger + Docker + Express project",
   "main": "./index.js",
   "typings": "./index.d.ts",
-  "files": [
-    "*.js",
-    "*.d.ts"
-  ],
   "scripts": {
     "check": "npm-check --skip-unused",
-    "preinstall": "npm i -g rimraf npm-run-all npm-check",
     "start": "npm-run-all -s clean build",
-    "clean": "rimraf ./*.{js,d.ts}",
+    "clean": "rimraf ./*.{js,d.ts,js.map}",
     "build": "tsc",
     "lint": "tslint ./src/{,**/}*.ts"
   },
