@@ -13,7 +13,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:yraffin/expressets-core.git"
+    "url": "git+ssh://git@github.com/yraffin/expressets-core.git"
   },
   "keywords": [
     "typescript",
