@@ -2,18 +2,17 @@
   "name": "expressts-core",
   "version": "1.0.0",
   "description": "Nodejs + TypeScript + Swagger + Docker + Express project",
-  "main": "./dist/index.js",
-  "typings": "./dist/index.d.ts",
+  "main": "./index.js",
+  "typings": "./index.d.ts",
   "files": [
-    "./dist/"
   ],
   "scripts": {
     "check": "npm-check --skip-unused",
     "preinstall": "npm i -g rimraf npm-run-all npm-check",
     "start": "npm-run-all -s clean build",
-    "clean": "rimraf dist",
+    "clean": "rimraf ./*.{js,d.ts}",
     "build": "tsc",
-    "lint": "./node_modules/tslint/bin/tslint ./src/{,**/}*.ts"
+    "lint": "tslint ./src/{,**/}*.ts"
   },
   "repository": {
     "type": "git",
