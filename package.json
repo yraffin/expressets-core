@@ -4,7 +4,10 @@
   "description": "Nodejs + TypeScript + Swagger + Docker + Express project",
   "main": "./index.js",
   "typings": "./index.d.ts",
-  "files": [],
+  "files": [
+    "*.js",
+    "*.d.ts"
+  ],
   "scripts": {
     "check": "npm-check --skip-unused",
     "preinstall": "npm i -g rimraf npm-run-all npm-check",
