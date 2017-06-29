@@ -1,11 +1,10 @@
 {
   "name": "expressts-core",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Nodejs + TypeScript + Swagger + Docker + Express project",
   "main": "./index.js",
   "typings": "./index.d.ts",
-  "files": [
-  ],
+  "files": [],
   "scripts": {
     "check": "npm-check --skip-unused",
     "preinstall": "npm i -g rimraf npm-run-all npm-check",
