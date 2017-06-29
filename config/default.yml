@@ -1,0 +1,17 @@
+ports:
+    http: 3000
+    debug: 5858
+
+auth:
+    jwt_secret: 'supersecret'
+    expiresIn: 43200
+
+mongo:
+    db: 'tagDev'
+    user: 'tagAdmin'
+    password: '27fda09bd79ee68da53b07f06dff1147ca9bb955c72265795e2e62110fd0e362'
+    replica: ''
+    servers: '91.121.78.143:3306'
+
+# none/debug/info
+loglevel: info
