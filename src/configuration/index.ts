@@ -4,7 +4,7 @@ import { Ports, IPorts } from './Ports';
 import { Auth, IAuth } from './Auth';
 import { Mongo, IMongo } from './Mongo';
 import { ServerConf, IServerConf } from './ServerConf';
-
+import { Action } from 'routing-controllers';
 export { Ports, Auth, ServerConf, Mongo };
 
 /**
@@ -16,6 +16,7 @@ export class AppConfig {
   auth?: IAuth;
   server?: IServerConf;
   mongo?: IMongo;
+  authCheck?: (action: Action, roles: any[]) => Promise<boolean> | boolean;
 
   /**
    * Initializes a new instance of the AppConfig class.
@@ -27,6 +28,7 @@ export class AppConfig {
     this.auth = config.auth;
     this.server = config.server;
     this.mongo = config.mongo;
+    this.authCheck = config.authCheck;
   }
 }
 

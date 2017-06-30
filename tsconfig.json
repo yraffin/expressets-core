@@ -19,7 +19,7 @@
     "allowSyntheticDefaultImports": true,
     "suppressExcessPropertyErrors": true,
     "suppressImplicitAnyIndexErrors": true,
-    "outDir": "./",
+    "outDir": "dist/",
     "baseUrl": "src/",
     "listFiles": false,
     "noEmitHelpers": true

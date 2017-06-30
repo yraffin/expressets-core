@@ -11,7 +11,7 @@ import { useExpressServer } from 'routing-controllers';
 
 import { setupLogging } from './Logging';
 import { setupSwagger } from './Swagger';
-import { setupAuth } from './Authentication';
+import { setupAuth } from './authentication';
 import { ServerConf } from '../configuration';
 
 export class ExpressConfig {
