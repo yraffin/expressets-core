@@ -36,6 +36,12 @@ export class Application {
   }
 
   /**
+   * Setup the authentication.
+   * @method
+   */
+  setupAuth(){}
+
+  /**
    * Start the application.
    * @async
    * @method
@@ -50,6 +56,8 @@ export class Application {
     // create express config
     this.express = new ExpressConfig();
 
+    this.setupAuth();
+    
     const ports = Container.get(Ports);
 
     // Start Webserver

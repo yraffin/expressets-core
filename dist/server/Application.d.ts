@@ -22,6 +22,11 @@ export declare class Application {
      */
     constructor(options?: AppConfig);
     /**
+     * Setup the authentication.
+     * @method
+     */
+    setupAuth(): void;
+    /**
      * Start the application.
      * @async
      * @method
