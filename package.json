@@ -2,12 +2,12 @@
   "name": "expressts-core",
   "version": "0.0.2",
   "description": "Nodejs + TypeScript + Swagger + Docker + Express project",
-  "main": "./index.js",
-  "typings": "./index.d.ts",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "check": "npm-check --skip-unused",
     "start": "npm-run-all -s clean build",
-    "clean": "rimraf ./*.{js,d.ts,js.map}",
+    "clean": "rimraf dist/",
     "build": "tsc",
     "lint": "tslint ./src/{,**/}*.ts"
   },
