@@ -40,7 +40,7 @@ function setupSockets(app) {
             eventNamesForThisHandler.forEach(eventName => {
                 const callback = eventHandler[eventName];
                 socket.on(eventName, (data) => {
-                    callback(Object.assign({ socket }, data));
+                    callback({ socket, data });
                 });
             });
         });

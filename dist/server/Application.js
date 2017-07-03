@@ -21,6 +21,11 @@ class Application {
         configuration_1.initializeAppConfig(options);
     }
     /**
+     * Setup the authentication.
+     * @method
+     */
+    setupAuth() { }
+    /**
      * Start the application.
      * @async
      * @method
@@ -33,6 +38,7 @@ class Application {
             yield this.createDbConnection();
             // create express config
             this.express = new Express_1.ExpressConfig();
+            this.setupAuth();
             const ports = typedi_1.Container.get(configuration_1.Ports);
             // Start Webserver
             this.server = this.express.app.listen(ports.http, () => {
