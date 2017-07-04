@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const winston = require("winston");
 const config = require("config");
 const expressWinston = require("express-winston");
-const logging_1 = require("../common/logging");
+const logging_1 = require("../core/logging");
 const level = process.env.LOG_LEVEL || config.get('loglevel');
 function setupLogging(app) {
     // Development Logger

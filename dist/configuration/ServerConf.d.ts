@@ -7,6 +7,8 @@ export interface IServerConf {
     distPath?: string;
     /** Gets or sets the api route prefix. @property {string} */
     routePrefix?: string;
+    /** Gets or sets the api socket origins. @property {string} */
+    socketOrigins?: string;
 }
 /**
  * Represents the application server configuration
@@ -17,6 +19,11 @@ export declare class ServerConf {
     distPath: string;
     /** The config routePrefix path */
     routePrefix: string;
+    /** The socket origins */
+    private _socketOrigins;
+    /** Gets the socket origins. @property {string} */
+    /** Sets the socket origins. @property {string} */
+    socketOrigins: string;
     /**
      * Initializes the server configuration
      * @method

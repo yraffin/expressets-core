@@ -6,7 +6,7 @@ const glob = require("glob");
 const path = require("path");
 const MetadataRegistry_1 = require("event-dispatch/MetadataRegistry");
 const typedi_1 = require("typedi");
-const logging_1 = require("../common/logging");
+const logging_1 = require("../core/logging");
 const configuration_1 = require("../configuration");
 /**
  * Setup the socket server on express application.
@@ -18,7 +18,11 @@ function setupSockets(app) {
     // include subscribers dynamically
     const files = glob.sync(serverConf.distPath + '/**/*Subscriber.js');
     files.map(f => { return require(path.resolve(f)); });
-    let server = io(app);
+    const options = {
+        origins: serverConf.socketOrigins,
+        path: `${serverConf.routePrefix}-socket`
+    };
+    let server = io(app, options);
     server.use((socket, next) => {
         passport.authenticate('jwt', { session: false }, (err, user, info) => {
             if (err)
@@ -32,6 +36,14 @@ function setupSockets(app) {
     server.on('connection', (socket) => {
         logging_1.logger.info('Web Sockets initalized');
         // const userId = socket.request.session.passport.user;
+        socket.on('disconnecting', (reason) => {
+            logging_1.logger.info('Web Socket disconnecting...');
+            logging_1.logger.debug(reason);
+        });
+        socket.on('disconnect', (reason) => {
+            logging_1.logger.info('Web Socket disconnected');
+            logging_1.logger.debug(reason);
+        });
         // bind applicable subscribers to the socket
         MetadataRegistry_1.defaultMetadataRegistry
             .collectEventsHandlers
@@ -40,6 +52,8 @@ function setupSockets(app) {
             eventNamesForThisHandler.forEach(eventName => {
                 const callback = eventHandler[eventName];
                 socket.on(eventName, (data) => {
+                    logging_1.logger.debug(`Socket emitting event '${eventName}'`);
+                    logging_1.logger.debug(data);
                     callback({ socket, data });
                 });
             });

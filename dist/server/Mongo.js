@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongodb_1 = require("mongodb");
 const typedi_1 = require("typedi");
 const configuration_1 = require("../configuration");
+const logging_1 = require("../core/logging");
 let Mongo = class Mongo {
     db() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -49,14 +50,15 @@ let Mongo = class Mongo {
                     connectTimeoutMS: 30000,
                     socketTimeoutMS: 30000
                 },
-                //replicaSet: config.replica,
                 ha: true,
                 haInterval: 10000
             };
             if (listServ.length > 1) {
                 options.replicaSet = config.replica;
             }
+            logging_1.logger.debug('Attending to connect to mongodb');
             const db = yield mongodb_1.MongoClient.connect(`${url.substr(0, url.length - 1)}/${config.db}`, options);
+            logging_1.logger.debug('Mongo connection succeded');
             // authenticate to db
             // await db.admin().authenticate(config.user, config.password);
             return db;

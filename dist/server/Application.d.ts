@@ -1,5 +1,5 @@
 /// <reference types="node" />
-import * as http from "http";
+import * as http from 'http';
 import { Db } from 'mongodb';
 import { ExpressConfig } from './Express';
 import { Mongo } from './Mongo';
@@ -21,11 +21,6 @@ export declare class Application {
      * @param {AppConfig} options The application aconfiguration options.
      */
     constructor(options?: AppConfig);
-    /**
-     * Setup the authentication.
-     * @method
-     */
-    setupAuth(): void;
     /**
      * Start the application.
      * @async

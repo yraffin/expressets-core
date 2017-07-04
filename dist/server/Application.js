@@ -4,7 +4,7 @@ const routing_controllers_1 = require("routing-controllers");
 const typedi_1 = require("typedi");
 const Express_1 = require("./Express");
 const Socket_1 = require("./Socket");
-const logging_1 = require("../common/logging");
+const logging_1 = require("../core/logging");
 const Mongo_1 = require("./Mongo");
 const configuration_1 = require("../configuration");
 /**
@@ -21,11 +21,6 @@ class Application {
         configuration_1.initializeAppConfig(options);
     }
     /**
-     * Setup the authentication.
-     * @method
-     */
-    setupAuth() { }
-    /**
      * Start the application.
      * @async
      * @method
@@ -35,10 +30,11 @@ class Application {
             // setup DI Container
             routing_controllers_1.useContainer(typedi_1.Container);
             // create mongo connection
+            logging_1.logger.info('Attending to connect to mongodb');
             yield this.createDbConnection();
+            logging_1.logger.info('Connected to mongodb');
             // create express config
             this.express = new Express_1.ExpressConfig();
-            this.setupAuth();
             const ports = typedi_1.Container.get(configuration_1.Ports);
             // Start Webserver
             this.server = this.express.app.listen(ports.http, () => {
