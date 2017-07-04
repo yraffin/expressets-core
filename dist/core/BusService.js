@@ -50,8 +50,8 @@ let BusService = class BusService {
                 callback(message);
             }
             this.receiveMessage(this.onReceiveMessage);
-            this.logError(`Message received from queue '${this.isSender ? this.nameResponse : this.nameRequest}'`, error);
-            logging_1.logger.debug('Message received:', message);
+            // this.logError(`Message received from queue '${this.isSender ? this.nameResponse : this.nameRequest}'`, error);
+            // logger.debug('Message received:', message);
         });
     }
     /**

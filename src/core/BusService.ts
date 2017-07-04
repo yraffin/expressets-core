@@ -71,8 +71,8 @@ export abstract class BusService {
       }
 
       this.receiveMessage(this.onReceiveMessage);
-      this.logError(`Message received from queue '${this.isSender ? this.nameResponse : this.nameRequest}'`, error);
-      logger.debug('Message received:', message);
+      // this.logError(`Message received from queue '${this.isSender ? this.nameResponse : this.nameRequest}'`, error);
+      // logger.debug('Message received:', message);
     });
   }
 
