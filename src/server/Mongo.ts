@@ -1,7 +1,7 @@
 import { MongoClient, Db, MongoClientOptions, ReadPreference } from 'mongodb';
-import * as config from 'config';
 import { Service, Container } from 'typedi';
 import { Mongo as MongoConf } from '../configuration';
+import { logger } from '../core/logging';
 
 @Service()
 export class Mongo {
@@ -53,16 +53,19 @@ export class Mongo {
         connectTimeoutMS: 30000,
         socketTimeoutMS: 30000
       },
-      //replicaSet: config.replica,
       ha: true,
       haInterval: 10000
     };
 
-    if(listServ.length > 1){
-        options.replicaSet = config.replica;
+    if (listServ.length > 1) {
+      options.replicaSet = config.replica;
     }
 
+    logger.debug('Attending to connect to mongodb');
+
     const db = await MongoClient.connect(`${url.substr(0, url.length - 1)}/${config.db}`, options);
+
+    logger.debug('Mongo connection succeded');
 
     // authenticate to db
     // await db.admin().authenticate(config.user, config.password);

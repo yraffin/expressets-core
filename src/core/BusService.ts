@@ -1,8 +1,11 @@
-import { Service, Inject } from 'typedi';
+import { Container, Service } from 'typedi';
 import * as azure from 'azure';
 
-const request = "request";
-const response = "response";
+import { Bus } from '../configuration';
+import { logger } from '../core/logging';
+
+const request = 'request';
+const response = 'response';
 /**
  * Represents the base mongo service.
  * @class
@@ -10,49 +13,78 @@ const response = "response";
 @Service()
 export abstract class BusService {
 
-    /** Service bus */
-    private serviceBus;
+  /** name of the queue @protected @property {string} */
+  protected abstract name: string;
 
-    /** name of the queue */
-    protected abstract name: string;
+  /** Is sender @protected @property {boolean} */
+  protected abstract isSender: boolean;
 
-    /** name request queue */
-    private get nameRequest(){
-        return this.name + request;
-    };
+  /** Service bus */
+  private serviceBus: any;
 
-    /** name request queue */
-    private get nameResponse(){
-        return this.name + response;
+  /** name request queue */
+  private get nameRequest() {
+    return this.name + request;
+  };
+
+  /** name request queue */
+  private get nameResponse() {
+    return this.name + response;
+  }
+
+  constructor(name: string) {
+    this.name = name;
+    const config = Container.get(Bus);
+    this.serviceBus = azure.createServiceBusService(config.connectionString);
+    this.serviceBus.createQueueIfNotExists(this.nameRequest, (error) => {
+      this.logError(`Connection to Azure Service Bus '${this.nameRequest}'`, error);
+    });
+    this.serviceBus.createQueueIfNotExists(this.nameResponse, (error) => {
+      this.logError(`Connection to Azure Service Bus '${this.nameRequest}'`, error);
+    });
+
+    this.receiveMessage(this.onReceiveMessage);
+    logger.info(`Bus '${this.name}' Instancied`);
+  }
+
+  /** Utils to send message */
+  sendMessage(message: any) {
+    this.serviceBus.sendQueueMessage(this.isSender ? this.nameRequest : this.nameResponse, message, (error) => {
+      this.logError(`Message sent to queue '${this.isSender ? this.nameRequest : this.nameResponse}'`, error);
+      logger.debug('Message sent:', message);
+    });
+
+  }
+
+  /** Receive message */
+  abstract onReceiveMessage(message: any);
+
+  /** Utils to recive message */
+  private receiveMessage(callback) {
+    this.serviceBus.receiveQueueMessage(this.isSender ? this.nameResponse : this.nameRequest, (error, message) => {
+      if (message) {
+        callback(message);
+      }
+
+      this.receiveMessage(this.onReceiveMessage);
+      this.logError(`Message received from queue '${this.isSender ? this.nameResponse : this.nameRequest}'`, error);
+      logger.debug('Message received:', message);
+    });
+  }
+
+  /**
+   * Log an error if occurred.
+   * @method
+   * @param {string} message The message to log on error.
+   * @param {any} error The current error.
+   */
+  private logError(message: string, error: any) {
+    if (!error) {
+      logger.debug(`${message} succeeded.`);
+      return;
     }
 
-    /** Is sender */
-    protected abstract isSender: boolean;
-    
-    constructor(name: string){
-        this.name = name;
-        this.serviceBus = azure.createServiceBusService('Endpoint=sb://adeccotag.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=3s1kAmkUJnD3a9RwajozJv8B0mJ+07rHZG0n2Tgkuo4=');
-        this.serviceBus.createQueueIfNotExists(this.nameRequest, function(){});
-        this.serviceBus.createQueueIfNotExists(this.nameResponse, function(){});
-        this.receiveMessage(this.onReceiveMessage);
-        console.log('Bus Instancied');
-    }
-
-    /** Utils to send message */
-    sendMessage(message: any){
-        this.serviceBus.sendQueueMessage(this.isSender ? this.nameRequest : this.nameResponse, message, function(){});
-    }
-
-    /** Utils to recive message */
-    private receiveMessage(callback){
-        this.serviceBus.receiveQueueMessage(this.isSender ? this.nameResponse : this.nameRequest, (error, message) => {
-            if(message){
-                callback(message);
-            }
-            this.receiveMessage(this.onReceiveMessage);
-        });
-    }
-
-    /** Receive message */
-    abstract onReceiveMessage(message: any);
+    logger.error(message, error.message);
+    logger.debug(error);
+  }
 }

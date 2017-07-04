@@ -1,13 +1,11 @@
-import * as express from "express";
-import * as http from "http";
-import * as config from 'config';
+import * as http from 'http';
 import { Db } from 'mongodb';
 import { useContainer } from 'routing-controllers';
 import { Container } from 'typedi';
 
 import { ExpressConfig } from './Express';
 import { setupSockets } from './Socket';
-import { logger } from '../common/logging';
+import { logger } from '../core/logging';
 import { Mongo } from './Mongo';
 import { Ports, initializeAppConfig, AppConfig } from '../configuration';
 
@@ -36,12 +34,6 @@ export class Application {
   }
 
   /**
-   * Setup the authentication.
-   * @method
-   */
-  setupAuth(){}
-
-  /**
    * Start the application.
    * @async
    * @method
@@ -51,13 +43,13 @@ export class Application {
     useContainer(Container);
 
     // create mongo connection
+    logger.info('Attending to connect to mongodb');
     await this.createDbConnection();
+    logger.info('Connected to mongodb');
 
     // create express config
     this.express = new ExpressConfig();
 
-    this.setupAuth();
-    
     const ports = Container.get(Ports);
 
     // Start Webserver
@@ -86,9 +78,8 @@ export class Application {
       }
 
       this.mongo.disconnect();
-    })
+    });
   }
-
 
   /**
    * Create the database connection.

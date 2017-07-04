@@ -1,7 +1,7 @@
 import * as winston from 'winston';
 import * as config from 'config';
 import * as expressWinston from 'express-winston';
-import { logger } from '../common/logging';
+import { logger } from '../core/logging';
 
 const level = process.env.LOG_LEVEL || config.get('loglevel');
 
