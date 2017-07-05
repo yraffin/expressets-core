@@ -1,7 +1,10 @@
 /// <reference types="socket.io" />
-/**
- * Setup the socket server on express application.
- * @method
- * @param {Application} app The express application.
- */
-export declare function setupSockets(app: any): SocketIOStatic;
+export declare class Socket {
+    /**
+     * Setup the socket server on express application.
+     * @method
+     * @param {Application} app The express application.
+     */
+    setupSockets(app: any): SocketIOStatic;
+    setupSocketAuthentication(socket: any, next: any): void;
+}

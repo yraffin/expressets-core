@@ -17,10 +17,10 @@ const configuration_1 = require("../configuration");
 class ExpressConfig {
     constructor() {
         this.app = express();
-        Swagger_1.setupSwagger(this.app);
+        // setup auth
+        const swagger = typedi_1.Container.get(Swagger_1.Swagger);
+        swagger.setupSwagger(this.app);
         Logging_1.setupLogging(this.app);
-        const authentication = typedi_1.Container.get(Authentication_1.Authentication);
-        authentication.setupAuth(this.app);
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
         this.app.use(cors());
@@ -28,6 +28,9 @@ class ExpressConfig {
         this.app.use(health.ping());
         // use compression
         this.app.use(compression());
+        // setup auth
+        const authentication = typedi_1.Container.get(Authentication_1.Authentication);
+        authentication.setupAuth(this.app);
         this.setupControllers();
     }
     setupControllers() {

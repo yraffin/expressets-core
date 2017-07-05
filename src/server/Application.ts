@@ -4,10 +4,10 @@ import { useContainer } from 'routing-controllers';
 import { Container } from 'typedi';
 
 import { ExpressConfig } from './Express';
-import { setupSockets } from './Socket';
 import { logger } from '../core/logging';
 import { Mongo } from './Mongo';
 import { Ports, initializeAppConfig, AppConfig } from '../configuration';
+import { Socket } from './Socket';
 
 /**
  * Represents the application.
@@ -69,7 +69,8 @@ export class Application {
     });
 
     // Start Websockets
-    setupSockets(this.server);
+    const socket = Container.get(Socket);
+    socket.setupSockets(this.server);
 
     // On server stop, close mongo db instance
     this.server.on('close', () => {

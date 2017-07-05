@@ -3,10 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const routing_controllers_1 = require("routing-controllers");
 const typedi_1 = require("typedi");
 const Express_1 = require("./Express");
-const Socket_1 = require("./Socket");
 const logging_1 = require("../core/logging");
 const Mongo_1 = require("./Mongo");
 const configuration_1 = require("../configuration");
+const Socket_1 = require("./Socket");
 /**
  * Represents the application.
  * @class
@@ -52,7 +52,8 @@ class Application {
       `);
             });
             // Start Websockets
-            Socket_1.setupSockets(this.server);
+            const socket = typedi_1.Container.get(Socket_1.Socket);
+            socket.setupSockets(this.server);
             // On server stop, close mongo db instance
             this.server.on('close', () => {
                 if (!this.mongo) {

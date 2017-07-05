@@ -10,7 +10,7 @@ import { Container } from 'typedi';
 import { useExpressServer } from 'routing-controllers';
 
 import { setupLogging } from './Logging';
-import { setupSwagger } from './Swagger';
+import { Swagger } from './Swagger';
 import { Authentication } from './Authentication';
 import { ServerConf } from '../configuration';
 
@@ -21,11 +21,11 @@ export class ExpressConfig {
   constructor() {
     this.app = express();
 
-    setupSwagger(this.app);
-    setupLogging(this.app);
+    // setup auth
+    const swagger = Container.get(Swagger);
+    swagger.setupSwagger(this.app);
 
-    const authentication = Container.get(Authentication);
-    authentication.setupAuth(this.app);
+    setupLogging(this.app);
 
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
@@ -35,6 +35,10 @@ export class ExpressConfig {
 
     // use compression
     this.app.use(compression());
+
+    // setup auth
+    const authentication = Container.get(Authentication);
+    authentication.setupAuth(this.app);
 
     this.setupControllers();
   }

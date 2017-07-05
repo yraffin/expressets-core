@@ -1,1 +1,4 @@
-export declare function setupSwagger(app: any): void;
+export declare class Swagger {
+    setupSwagger(app: any): void;
+    setupSwaggerSecurity(middleware: any): any;
+}
