@@ -7,5 +7,6 @@ export * from 'routing-controllers';
 export * from 'event-dispatch';
 export * from 'typedi';
 export { Application } from './server/Application';
+export { Authentication } from './server/Authentication';
 export * from './configuration';
 export * from './core';

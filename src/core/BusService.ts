@@ -62,10 +62,6 @@ export abstract class BusService {
   /** Utils to recive message */
   private receiveMessage(callback) {
     this.serviceBus.receiveQueueMessage(this.isSender ? this.nameResponse : this.nameRequest, (error, message) => {
-      if (!error && !message) {
-        return;
-      }
-      
       if (message) {
         callback(message);
       }

@@ -43,9 +43,6 @@ let BusService = class BusService {
     /** Utils to recive message */
     receiveMessage(callback) {
         this.serviceBus.receiveQueueMessage(this.isSender ? this.nameResponse : this.nameRequest, (error, message) => {
-            if (!error && !message) {
-                return;
-            }
             if (message) {
                 callback(message);
             }
