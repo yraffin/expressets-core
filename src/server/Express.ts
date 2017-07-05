@@ -11,7 +11,7 @@ import { useExpressServer } from 'routing-controllers';
 
 import { setupLogging } from './Logging';
 import { setupSwagger } from './Swagger';
-import { setupAuth } from './authentication';
+import { Authentication } from './Authentication';
 import { ServerConf } from '../configuration';
 
 export class ExpressConfig {
@@ -23,7 +23,9 @@ export class ExpressConfig {
 
     setupSwagger(this.app);
     setupLogging(this.app);
-    setupAuth(this.app);
+
+    const authentication = Container.get(Authentication);
+    authentication.setupAuth(this.app);
 
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));

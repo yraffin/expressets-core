@@ -12,14 +12,15 @@ const typedi_1 = require("typedi");
 const routing_controllers_1 = require("routing-controllers");
 const Logging_1 = require("./Logging");
 const Swagger_1 = require("./Swagger");
-const authentication_1 = require("./authentication");
+const Authentication_1 = require("./Authentication");
 const configuration_1 = require("../configuration");
 class ExpressConfig {
     constructor() {
         this.app = express();
         Swagger_1.setupSwagger(this.app);
         Logging_1.setupLogging(this.app);
-        authentication_1.setupAuth(this.app);
+        const authentication = typedi_1.Container.get(Authentication_1.Authentication);
+        authentication.setupAuth(this.app);
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
         this.app.use(cors());

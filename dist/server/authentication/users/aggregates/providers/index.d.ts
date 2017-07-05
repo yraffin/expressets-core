@@ -1,1 +1,0 @@
-export { LocalModel } from './LocalModel';
