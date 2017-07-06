@@ -14,6 +14,7 @@ const Logging_1 = require("./Logging");
 const Swagger_1 = require("./Swagger");
 const Authentication_1 = require("./Authentication");
 const configuration_1 = require("../configuration");
+const ErrorHandlerMiddleware_1 = require("../core/ErrorHandlerMiddleware");
 class ExpressConfig {
     constructor() {
         this.app = express();
@@ -38,11 +39,13 @@ class ExpressConfig {
         // gets specifical directories
         const controllerDirs = glob.sync(path.resolve(server.distPath + '/**/*Controller.js'));
         const middlewaresDirs = glob.sync(path.resolve(server.distPath + '/**/*Middleware.js'));
+        const middlewaresFuncDirs = middlewaresDirs.map(f => { return require(f); });
+        middlewaresFuncDirs.push(ErrorHandlerMiddleware_1.ErrorHandlerMiddleware);
         routing_controllers_1.useExpressServer(this.app, {
-            // defaultErrorHandler: false,
+            defaultErrorHandler: false,
             routePrefix: server.routePrefix,
             controllers: controllerDirs,
-            middlewares: middlewaresDirs
+            middlewares: middlewaresFuncDirs
         });
     }
 }

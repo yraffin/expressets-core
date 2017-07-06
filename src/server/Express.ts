@@ -13,6 +13,7 @@ import { setupLogging } from './Logging';
 import { Swagger } from './Swagger';
 import { Authentication } from './Authentication';
 import { ServerConf } from '../configuration';
+import { ErrorHandlerMiddleware } from '../core/ErrorHandlerMiddleware';
 
 export class ExpressConfig {
 
@@ -48,13 +49,16 @@ export class ExpressConfig {
 
     // gets specifical directories
     const controllerDirs = glob.sync(path.resolve(server.distPath + '/**/*Controller.js'));
-    const middlewaresDirs = glob.sync(path.resolve(server.distPath + '/**/*Middleware.js'));
 
+    const middlewaresDirs = glob.sync(path.resolve(server.distPath + '/**/*Middleware.js'));
+    const middlewaresFuncDirs = middlewaresDirs.map(f => { return require(f); });
+    middlewaresFuncDirs.push(ErrorHandlerMiddleware);
+    
     useExpressServer(this.app, {
-      // defaultErrorHandler: false,
+      defaultErrorHandler: false,
       routePrefix: server.routePrefix,
       controllers: controllerDirs,
-      middlewares: middlewaresDirs
+      middlewares: middlewaresFuncDirs
     });
   }
 
