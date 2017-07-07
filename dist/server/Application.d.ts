@@ -28,6 +28,12 @@ export declare class Application {
      */
     start(): Promise<void>;
     /**
+     * Close the application.
+     * @method
+     * @returns {Promise<void>}
+     */
+    close(): Promise<void>;
+    /**
      * Create the database connection.
      * @method
      * @returns {Promise<Db>}

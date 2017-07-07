@@ -83,6 +83,22 @@ export class Application {
   }
 
   /**
+   * Close the application.
+   * @method
+   * @returns {Promise<void>}
+   */
+  async close() {
+    let promise: Promise<void>;
+    if (!this.mongo) {
+      promise = Promise.resolve();
+    } else {
+      promise = this.mongo.disconnect();
+    }
+
+    return promise.then(() => { this.server.close(); });
+  }
+
+  /**
    * Create the database connection.
    * @method
    * @returns {Promise<Db>}

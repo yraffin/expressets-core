@@ -3,7 +3,12 @@ export declare class Mongo {
     private _db;
     db(): Promise<Db>;
     health(): Promise<boolean>;
-    disconnect(): void;
+    /**
+     * Disconnect from the database.
+     * @method
+     * @returns {Promise<void>}
+     */
+    disconnect(): Promise<void>;
     /**
      * Connect to mongo db
      * @method

@@ -21,12 +21,17 @@ export class Mongo {
     return true;
   }
 
-  disconnect() {
+  /**
+   * Disconnect from the database.
+   * @method
+   * @returns {Promise<void>}
+   */
+  async disconnect() {
     if (!this._db) {
-      return;
+      return Promise.resolve();
     }
 
-    this._db.close();
+    return this._db.close(true);
   }
 
   /**

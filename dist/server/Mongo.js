@@ -20,11 +20,18 @@ let Mongo = class Mongo {
             return true;
         });
     }
+    /**
+     * Disconnect from the database.
+     * @method
+     * @returns {Promise<void>}
+     */
     disconnect() {
-        if (!this._db) {
-            return;
-        }
-        this._db.close();
+        return __awaiter(this, void 0, void 0, function* () {
+            if (!this._db) {
+                return Promise.resolve();
+            }
+            return this._db.close(true);
+        });
     }
     /**
      * Connect to mongo db

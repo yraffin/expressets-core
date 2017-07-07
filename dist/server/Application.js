@@ -64,6 +64,23 @@ class Application {
         });
     }
     /**
+     * Close the application.
+     * @method
+     * @returns {Promise<void>}
+     */
+    close() {
+        return __awaiter(this, void 0, void 0, function* () {
+            let promise;
+            if (!this.mongo) {
+                promise = Promise.resolve();
+            }
+            else {
+                promise = this.mongo.disconnect();
+            }
+            return promise.then(() => { this.server.close(); });
+        });
+    }
+    /**
      * Create the database connection.
      * @method
      * @returns {Promise<Db>}
