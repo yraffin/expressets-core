@@ -46,7 +46,7 @@ export class Application {
     // setup app insite Azure
     const azure = Container.get(Azure);
     appInsights.setup(azure.appInsights)
-      .setAutoDependencyCorrelation(false)
+      .setAutoDependencyCorrelation(true)
       .setAutoCollectRequests(true)
       .setAutoCollectPerformance(true)
       .setAutoCollectExceptions(true)
