@@ -1,4 +1,5 @@
 import * as http from 'http';
+import * as appInsights from 'applicationinsights';
 import { Db } from 'mongodb';
 import { useContainer } from 'routing-controllers';
 import { Container } from 'typedi';
@@ -6,7 +7,7 @@ import { Container } from 'typedi';
 import { ExpressConfig } from './Express';
 import { logger } from '../core/logging';
 import { Mongo } from './Mongo';
-import { Ports, initializeAppConfig, AppConfig } from '../configuration';
+import { Ports, initializeAppConfig, AppConfig, Azure } from '../configuration';
 import { Socket } from './Socket';
 
 /**
@@ -41,6 +42,16 @@ export class Application {
   async start() {
     // setup DI Container
     useContainer(Container);
+
+    // setup app insite Azure
+    const azure = Container.get(Azure);
+    appInsights.setup(azure.appInsights)
+      .setAutoDependencyCorrelation(false)
+      .setAutoCollectRequests(true)
+      .setAutoCollectPerformance(true)
+      .setAutoCollectExceptions(true)
+      .setAutoCollectDependencies(true)
+      .start();
 
     // create mongo connection
     logger.info('Attending to connect to mongodb');

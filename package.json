@@ -3,7 +3,7 @@
   "version": "0.0.15",
   "description": "Nodejs + TypeScript + Swagger + Docker + Express project",
   "main": "dist/index.js",
-  "typings": "dist/index.d.ts",
+  "typings": "dist/*.d.ts",
   "scripts": {
     "preinstall": "npm i nodemon node-inspector rimraf npm-run-all npm-check",
     "check": "npm-check --skip-unused",
@@ -34,6 +34,7 @@
   "homepage": "https://github.com/yraffin/expressets-core/README.md",
   "dependencies": {
     "@types/lodash": "^4.14.68",
+    "applicationinsights": "0.21.0",
     "azure": "^0.7.19",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.15.2",

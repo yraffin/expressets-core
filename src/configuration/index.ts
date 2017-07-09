@@ -4,10 +4,10 @@ import { Ports, IPorts } from './Ports';
 import { Auth, IAuth } from './Auth';
 import { Mongo, IMongo } from './Mongo';
 import { ServerConf, IServerConf } from './ServerConf';
-import { Bus, IBus } from './Bus';
+import { Azure, IAzure } from './Azure';
 import { Action } from 'routing-controllers';
 
-export { Ports, Auth, ServerConf, Mongo, Bus };
+export { Ports, Auth, ServerConf, Mongo, Azure };
 
 /**
  * Represents the application configuration options.
@@ -18,7 +18,7 @@ export class AppConfig {
   auth?: IAuth;
   server?: IServerConf;
   mongo?: IMongo;
-  bus?: IBus;
+  azure?: IAzure;
 
   authCheck?: (action: Action, roles: any[]) => Promise<boolean> | boolean;
 
@@ -33,7 +33,7 @@ export class AppConfig {
     this.server = config.server;
     this.mongo = config.mongo;
     this.authCheck = config.authCheck;
-    this.bus = config.bus;
+    this.azure = config.azure;
   }
 }
 
@@ -55,6 +55,6 @@ export function initializeAppConfig(options?: AppConfig) {
   const mongo = Container.get(Mongo);
   mongo.initialize(options.mongo || {});
 
-  const bus = Container.get(Bus);
-  bus.initialize(options.bus || {});
+  const azure = Container.get(Azure);
+  azure.initialize(options.azure || {});
 }
