@@ -3,7 +3,7 @@
   "version": "0.0.16",
   "description": "Nodejs + TypeScript + Swagger + Docker + Express project",
   "main": "dist/index.js",
-  "typings": "dist/*.d.ts",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "preinstall": "npm i nodemon node-inspector rimraf npm-run-all npm-check",
     "check": "npm-check --skip-unused",
