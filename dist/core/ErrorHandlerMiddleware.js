@@ -16,7 +16,7 @@ let ErrorHandlerMiddleware = class ErrorHandlerMiddleware {
      * @param {Express.NextFunction} next The middleware next function.
      */
     error(error, request, response, next) {
-        let errors = [];
+        const errors = [];
         // Treat http errors
         if (error instanceof routing_controllers_1.HttpError) {
             if (error['errors']) {
@@ -47,11 +47,11 @@ let ErrorHandlerMiddleware = class ErrorHandlerMiddleware {
         // Validation error
         if (err instanceof class_validator_1.ValidationError) {
             // Get entity name 
-            let entity = err.target.constructor.name.match(/[A-Z][a-z]+/g)[0].toLowerCase();
+            const entity = err.target.constructor.name.match(/[A-Z][a-z]+/g)[0].toLowerCase();
             // Treat error
             for (let key in err.constraints) {
                 // Get code error
-                let type = this.manageErrorType(key);
+                const type = this.manageErrorType(key);
                 // Push in array
                 errors.push(['error', entity, err.property, type].join('.'));
             }

@@ -46,11 +46,10 @@ export class Application {
     // setup app insite Azure
     const azure = Container.get(Azure);
     appInsights.setup(azure.appInsights)
-      .setAutoDependencyCorrelation(true)
       .setAutoCollectRequests(true)
       .setAutoCollectPerformance(true)
       .setAutoCollectExceptions(true)
-      .setAutoCollectDependencies(true)
+      .setAutoCollectConsole(true)
       .start();
 
     // create mongo connection

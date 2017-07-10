@@ -25,7 +25,7 @@ export class Azure {
 
   /** Gets the connection string. @property {string} */
   get busConnectionString() {
-    return <string>process.env.AZURE_SERVICEBUS_CONNECTION_STRING || this._busConnectionString;
+    return process.env.AZURE_SERVICEBUS_CONNECTION_STRING as string || this._busConnectionString;
   }
   
   /** Sets the connection string. @property {string} */
@@ -35,7 +35,7 @@ export class Azure {
 
   /** Gets the application insights key. @property {string} */
   get appInsights() {
-    return <string>process.env.AZURE_APP_INSIGHTS || this._appInsights;
+    return process.env.AZURE_APP_INSIGHTS as string || this._appInsights;
   }
   
   /** Sets the application insights key. @property {string} */

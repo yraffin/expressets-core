@@ -31,7 +31,7 @@ export class ServerConf {
 
   /** Gets the socket origins. @property {string} */
   get socketOrigins() {
-    return <string>process.env.SOCKET_ORIGINS || this._socketOrigins;
+    return process.env.SOCKET_ORIGINS || this._socketOrigins;
   }
   
   /** Sets the socket origins. @property {string} */

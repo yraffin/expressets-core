@@ -19,7 +19,7 @@ export class Auth {
 
   /** Gets the jwt secret. @property {string} */
   get jwtSecret() {
-    return <string>process.env.JWT_SECRET || this._jwtSecret;
+    return process.env.JWT_SECRET as string || this._jwtSecret;
   }
   
   /** Sets the jwt secret. @property {string} */

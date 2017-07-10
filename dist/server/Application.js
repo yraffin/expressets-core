@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const appInsights = require("applicationinsights");
 const routing_controllers_1 = require("routing-controllers");
 const typedi_1 = require("typedi");
 const Express_1 = require("./Express");
@@ -29,6 +30,14 @@ class Application {
         return __awaiter(this, void 0, void 0, function* () {
             // setup DI Container
             routing_controllers_1.useContainer(typedi_1.Container);
+            // setup app insite Azure
+            const azure = typedi_1.Container.get(configuration_1.Azure);
+            appInsights.setup(azure.appInsights)
+                .setAutoCollectRequests(true)
+                .setAutoCollectPerformance(true)
+                .setAutoCollectExceptions(true)
+                .setAutoCollectConsole(true)
+                .start();
             // create mongo connection
             logging_1.logger.info('Attending to connect to mongodb');
             yield this.createDbConnection();

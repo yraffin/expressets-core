@@ -43,7 +43,7 @@ export class Mongo {
 
   /** Gets the db name. @property {string} */
   get db() {
-    return <string>process.env.DB || this._db;
+    return process.env.DB || this._db;
   }
 
   /** Sets the db name. @property {string} */
@@ -53,7 +53,7 @@ export class Mongo {
 
   /** Gets the user. @property {string} */
   get user() {
-    return <string>process.env.DB_USER || this._user;
+    return process.env.DB_USER || this._user;
   }
 
   /** Sets the user. @property {string} */
@@ -63,7 +63,7 @@ export class Mongo {
 
   /** Gets the password. @property {string} */
   get password() {
-    return <string>process.env.DB_PASSWORD || this._password;
+    return process.env.DB_PASSWORD || this._password;
   }
 
   /** Sets the password. @property {string} */
@@ -73,7 +73,7 @@ export class Mongo {
 
   /** Gets the replica. @property {string} */
   get replica() {
-    return <string>process.env.DB_REPLICA || this._replica;
+    return process.env.DB_REPLICA || this._replica;
   }
 
   /** Sets the replica. @property {string} */
@@ -83,7 +83,7 @@ export class Mongo {
 
   /** Gets the servers. @property {string} */
   get servers() {
-    return <string>process.env.DB_SERVERS || this._servers;
+    return process.env.DB_SERVERS || this._servers;
   }
 
   /** Sets the servers. @property {string} */

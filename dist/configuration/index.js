@@ -9,8 +9,8 @@ const Mongo_1 = require("./Mongo");
 exports.Mongo = Mongo_1.Mongo;
 const ServerConf_1 = require("./ServerConf");
 exports.ServerConf = ServerConf_1.ServerConf;
-const Bus_1 = require("./Bus");
-exports.Bus = Bus_1.Bus;
+const Azure_1 = require("./Azure");
+exports.Azure = Azure_1.Azure;
 /**
  * Represents the application configuration options.
  * @class
@@ -27,7 +27,7 @@ class AppConfig {
         this.server = config.server;
         this.mongo = config.mongo;
         this.authCheck = config.authCheck;
-        this.bus = config.bus;
+        this.azure = config.azure;
     }
 }
 exports.AppConfig = AppConfig;
@@ -45,8 +45,8 @@ function initializeAppConfig(options) {
     server.initialize(options.server || {});
     const mongo = typedi_1.Container.get(Mongo_1.Mongo);
     mongo.initialize(options.mongo || {});
-    const bus = typedi_1.Container.get(Bus_1.Bus);
-    bus.initialize(options.bus || {});
+    const azure = typedi_1.Container.get(Azure_1.Azure);
+    azure.initialize(options.azure || {});
 }
 exports.initializeAppConfig = initializeAppConfig;
 //# sourceMappingURL=index.js.map

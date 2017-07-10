@@ -13,8 +13,8 @@ const response = 'response';
 let BusService = class BusService {
     constructor(name) {
         this.name = name;
-        const config = typedi_1.Container.get(configuration_1.Bus);
-        this.serviceBus = azure.createServiceBusService(config.connectionString);
+        const config = typedi_1.Container.get(configuration_1.Azure);
+        this.serviceBus = azure.createServiceBusService(config.busConnectionString);
         this.serviceBus.createQueueIfNotExists(this.nameRequest, (error) => {
             this.logError(`Connection to Azure Service Bus '${this.nameRequest}'`, error);
         });
@@ -28,7 +28,6 @@ let BusService = class BusService {
     get nameRequest() {
         return this.name + request;
     }
-    ;
     /** name request queue */
     get nameResponse() {
         return this.name + response;

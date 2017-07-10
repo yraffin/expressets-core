@@ -1,7 +1,7 @@
 import { Container, Service } from 'typedi';
 import * as azure from 'azure';
 
-import { Bus } from '../configuration';
+import { Azure } from '../configuration';
 import { logger } from '../core/logging';
 
 const request = 'request';
@@ -25,7 +25,7 @@ export abstract class BusService {
   /** name request queue */
   private get nameRequest() {
     return this.name + request;
-  };
+  }
 
   /** name request queue */
   private get nameResponse() {
@@ -34,8 +34,8 @@ export abstract class BusService {
 
   constructor(name: string) {
     this.name = name;
-    const config = Container.get(Bus);
-    this.serviceBus = azure.createServiceBusService(config.connectionString);
+    const config = Container.get(Azure);
+    this.serviceBus = azure.createServiceBusService(config.busConnectionString);
     this.serviceBus.createQueueIfNotExists(this.nameRequest, (error) => {
       this.logError(`Connection to Azure Service Bus '${this.nameRequest}'`, error);
     });

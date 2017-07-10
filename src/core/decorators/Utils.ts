@@ -20,8 +20,8 @@ export function initializeProperties(values: Map<string, string>);
 export function initializeProperties(property: string, value: any);
 export function initializeProperties(property: string | Map<string, string>, value?: any) {
   function decorator(target: Class): Class | void;
-  function decorator(target: Object, targetKey: string | symbol): void;
-  function decorator(target: Object, targetKey?: string | symbol): Class | void {
+  function decorator(target: object, targetKey: string | symbol): void;
+  function decorator(target: object, targetKey?: string | symbol): Class | void {
     const dynamicType = class {
       constructor() {
         if (_.isMap(property)) {
@@ -43,7 +43,7 @@ export function initializeProperties(property: string | Map<string, string>, val
       Reflect.defineMetadata('design:type', dynamicType, target, targetKey);
     } else {
       // type metadata
-      Object.setPrototypeOf(dynamicType.prototype, (target as Function).prototype);
+      Object.setPrototypeOf(dynamicType.prototype, (target as FunctionConstructor).prototype);
       Object.setPrototypeOf(dynamicType, target);
       return dynamicType;
     }
@@ -63,8 +63,8 @@ export function initializeStaticProperties(values: Map<string, string>);
 export function initializeStaticProperties(property: string, value: any);
 export function initializeStaticProperties(property: string | Map<string, string>, value?: any) {
   function decorator(target: Class): Class | void;
-  function decorator(target: Object, targetKey: string | symbol): void;
-  function decorator(target: Object, targetKey?: string | symbol): Class | void {
+  function decorator(target: object, targetKey: string | symbol): void;
+  function decorator(target: object, targetKey?: string | symbol): Class | void {
     const dynamicType = class { };
     if (!!targetKey) {
       // property metadata

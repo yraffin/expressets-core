@@ -7,11 +7,17 @@ auth:
     expiresIn: 43200
 
 mongo:
-    db: 'tagDev'
-    user: 'tagAdmin'
+    db: 'devDb'
+    user: 'devUser'
     password: '27fda09bd79ee68da53b07f06dff1147ca9bb955c72265795e2e62110fd0e362'
     replica: ''
-    servers: '91.121.78.143:3306'
+    servers: 'localhost:27017'
+
+azure:
+    bus_connection_string: 'your_azure_bus_connection_string'
+    app_insights: 'your_azure_app_insights_key'
+
+socket_origins: '*:* localhost:*'
 
 # none/debug/info
 loglevel: info
