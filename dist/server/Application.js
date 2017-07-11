@@ -79,13 +79,7 @@ class Application {
      */
     close() {
         return __awaiter(this, void 0, void 0, function* () {
-            let promise;
-            if (!this.mongo) {
-                promise = Promise.resolve();
-            }
-            else {
-                promise = this.mongo.disconnect();
-            }
+            const promise = !this.mongo ? Promise.resolve() : this.mongo.disconnect();
             return promise.then(() => { this.server.close(); });
         });
     }

@@ -13,22 +13,34 @@ export interface IMongo {
     replica?: string;
     /** Gets or sets the servers. @property {string} */
     servers?: string;
+    /** Gets or sets a value indicating whether to use mongodb session store. @property {boolean} */
+    useSessionStore?: boolean;
+    /** Gets or sets the session secret. @property {string} */
+    sessionSecret?: string;
+    /** Gets or sets the session max age. @property {number} */
+    sessionMaxAge?: number;
 }
 /**
  * Represents the application mongo config
  * @class
  */
 export declare class Mongo {
-    /** The config db name */
+    /** The config db name @property {string} */
     private _db;
-    /** The config user */
+    /** The config user @property {string} */
     private _user;
-    /** The config password */
+    /** The config password @property {string} */
     private _password;
-    /** The config replica */
+    /** The config replica @property {string} */
     private _replica;
-    /** The config servers */
+    /** The config servers @property {string} */
     private _servers;
+    /** The value indicating whether to use mongodb session store @property {boolean} */
+    private _useSessionStore;
+    /** The config session secret @property {string} */
+    private _sessionSecret;
+    /** The config session max age @property {number} */
+    private _sessionMaxAge;
     /** Gets the db name. @property {string} */
     /** Sets the db name. @property {string} */
     db: string;
@@ -41,6 +53,15 @@ export declare class Mongo {
     /** Gets the replica. @property {string} */
     /** Sets the replica. @property {string} */
     replica: string;
+    /** Gets the session secret. @property {string} */
+    /** Sets the session secret. @property {string} */
+    sessionSecret: string;
+    /** Gets the session max age. @property {number} */
+    /** Sets the session mas age. @property {number} */
+    sessionMaxAge: number;
+    /** Gets the a value indicating whether to use session store. @property {boolean} */
+    /** Sets the a value indicating whether to use session store. @property {boolean} */
+    useSessionStore: boolean;
     /** Gets the servers. @property {string} */
     /** Sets the servers. @property {string} */
     servers: string;

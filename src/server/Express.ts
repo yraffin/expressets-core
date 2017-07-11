@@ -8,11 +8,14 @@ import * as compression from 'compression';
 import * as glob from 'glob';
 import { Container } from 'typedi';
 import { useExpressServer } from 'routing-controllers';
+import * as session from 'express-session';
+import * as connectMongo from 'connect-mongo';
 
 import { setupLogging } from './Logging';
 import { Swagger } from './Swagger';
 import { Authentication } from './Authentication';
-import { ServerConf } from '../configuration';
+import { Mongo } from './Mongo';
+import { ServerConf, Mongo as MongoConf } from '../configuration';
 import { ErrorHandlerMiddleware } from '../core/ErrorHandlerMiddleware';
 
 export class ExpressConfig {
@@ -37,6 +40,24 @@ export class ExpressConfig {
     // use compression
     this.app.use(compression());
 
+    // use session
+    const mongoConf = Container.get(MongoConf);
+    const mongo = Container.get(Mongo);
+    if (mongoConf.useSessionStore) {
+      const mongoStore = connectMongo(session);
+      const store = new mongoStore({
+        db: mongo.getDb(),
+        clear_interval: mongoConf.sessionMaxAge
+      });
+      this.app.use(session({
+        secret: mongoConf.sessionSecret,
+        saveUninitialized: true,
+        resave: true,
+        cookie: { maxAge: mongoConf.sessionMaxAge * 1000 },
+        store,
+      }));
+    }
+
     // setup auth
     const authentication = Container.get(Authentication);
     authentication.setupAuth(this.app);
@@ -51,9 +72,9 @@ export class ExpressConfig {
     const controllerDirs = glob.sync(path.resolve(server.distPath + '/**/*Controller.js'));
 
     const middlewaresDirs = glob.sync(path.resolve(server.distPath + '/**/*Middleware.js'));
-    const middlewaresFuncDirs = middlewaresDirs.map(f => { return require(f); });
+    const middlewaresFuncDirs = middlewaresDirs.map((f) => require(f));
     middlewaresFuncDirs.push(ErrorHandlerMiddleware);
-    
+
     useExpressServer(this.app, {
       defaultErrorHandler: false,
       routePrefix: server.routePrefix,

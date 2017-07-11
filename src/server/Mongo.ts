@@ -8,6 +8,10 @@ export class Mongo {
 
   private _db: Db;
 
+  getDb() {
+    return this._db;
+  }
+
   async db() {
     if (!this._db) {
       this._db = await this.connect();

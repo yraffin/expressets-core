@@ -5,6 +5,9 @@ const typedi_1 = require("typedi");
 const configuration_1 = require("../configuration");
 const logging_1 = require("../core/logging");
 let Mongo = class Mongo {
+    getDb() {
+        return this._db;
+    }
     db() {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this._db) {

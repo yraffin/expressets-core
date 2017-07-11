@@ -1,6 +1,7 @@
 import { Db } from 'mongodb';
 export declare class Mongo {
     private _db;
+    getDb(): Db;
     db(): Promise<Db>;
     health(): Promise<boolean>;
     /**

@@ -7,16 +7,22 @@ const config = require("config");
  */
 class Mongo {
     constructor() {
-        /** The config db name */
+        /** The config db name @property {string} */
         this._db = config.get('mongo.db');
-        /** The config user */
+        /** The config user @property {string} */
         this._user = config.get('mongo.user');
-        /** The config password */
+        /** The config password @property {string} */
         this._password = config.get('mongo.password');
-        /** The config replica */
+        /** The config replica @property {string} */
         this._replica = config.get('mongo.replica');
-        /** The config servers */
+        /** The config servers @property {string} */
         this._servers = config.get('mongo.servers');
+        /** The value indicating whether to use mongodb session store @property {boolean} */
+        this._useSessionStore = config.get('mongo.useSessionStore');
+        /** The config session secret @property {string} */
+        this._sessionSecret = 'Mongo session secret';
+        /** The config session max age @property {number} */
+        this._sessionMaxAge = 24 * 60 * 60; // 1 day in second
     }
     /** Gets the db name. @property {string} */
     get db() {
@@ -50,6 +56,31 @@ class Mongo {
     set replica(value) {
         this._replica = value;
     }
+    /** Gets the session secret. @property {string} */
+    get sessionSecret() {
+        return process.env.DB_SESSION_SECRET || this._sessionSecret;
+    }
+    /** Sets the session secret. @property {string} */
+    set sessionSecret(value) {
+        this._sessionSecret = value;
+    }
+    /** Gets the session max age. @property {number} */
+    get sessionMaxAge() {
+        return process.env.DB_SESSION_MAX_AGE ? parseInt(process.env.DB_SESSION_MAX_AGE, 10) : this._sessionMaxAge;
+    }
+    /** Sets the session mas age. @property {number} */
+    set sessionMaxAge(value) {
+        this._sessionMaxAge = value;
+    }
+    /** Gets the a value indicating whether to use session store. @property {boolean} */
+    get useSessionStore() {
+        return process.env.DB_SESSION_STORE ?
+            (['true', '1'].indexOf(process.env.DB_SESSION_STORE.toLowerCase()) > -1) : this._useSessionStore;
+    }
+    /** Sets the a value indicating whether to use session store. @property {boolean} */
+    set useSessionStore(value) {
+        this._useSessionStore = value;
+    }
     /** Gets the servers. @property {string} */
     get servers() {
         return process.env.DB_SERVERS || this._servers;
@@ -69,6 +100,9 @@ class Mongo {
         this.password = options.password || this.password;
         this.replica = options.replica || this.replica;
         this.servers = options.servers || this.servers;
+        this.useSessionStore = options.useSessionStore || this.useSessionStore;
+        this.sessionSecret = options.sessionSecret || this.sessionSecret;
+        this.sessionMaxAge = options.sessionMaxAge || this.sessionMaxAge;
     }
 }
 exports.Mongo = Mongo;

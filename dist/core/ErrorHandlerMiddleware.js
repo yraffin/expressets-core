@@ -17,6 +17,9 @@ let ErrorHandlerMiddleware = class ErrorHandlerMiddleware {
      */
     error(error, request, response, next) {
         const errors = [];
+        if (response.statusMessage) {
+            return next();
+        }
         // Treat http errors
         if (error instanceof routing_controllers_1.HttpError) {
             if (error['errors']) {

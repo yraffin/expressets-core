@@ -22,6 +22,11 @@ export class ErrorHandlerMiddleware implements ExpressErrorMiddlewareInterface {
    */
   error(error: any, request: Express.Request, response: Express.Response, next: Express.NextFunction) {
     const errors = [];
+
+    if (response.statusMessage) {
+      return next();
+    }
+
     // Treat http errors
     if (error instanceof HttpError) {
       if (error['errors']) {

@@ -98,13 +98,7 @@ export class Application {
    * @returns {Promise<void>}
    */
   async close() {
-    let promise: Promise<void>;
-    if (!this.mongo) {
-      promise = Promise.resolve();
-    } else {
-      promise = this.mongo.disconnect();
-    }
-
+    const promise = !this.mongo ? Promise.resolve() : this.mongo.disconnect();
     return promise.then(() => { this.server.close(); });
   }
 

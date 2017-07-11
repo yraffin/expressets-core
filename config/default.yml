@@ -12,6 +12,7 @@ mongo:
     password: '27fda09bd79ee68da53b07f06dff1147ca9bb955c72265795e2e62110fd0e362'
     replica: ''
     servers: 'localhost:27017'
+    useSessionStore: true
 
 azure:
     bus_connection_string: 'your_azure_bus_connection_string'
