@@ -7,7 +7,7 @@ export * from 'routing-controllers';
 export * from 'event-dispatch';
 export * from 'typedi';
 export { Application } from './server/Application';
-export { Authentication } from './server/Authentication';
+export { Authentication, IsLogged } from './server/Authentication';
 export { Swagger } from './server/Swagger';
 export { Socket } from './server/Socket';
 export * from './configuration';

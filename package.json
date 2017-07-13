@@ -53,6 +53,8 @@
     "js-yaml": "^3.9.0",
     "lodash": "^4.17.4",
     "mongodb": "^2.2.30",
+    "passport": "^0.3.2",
+    "passport-azure-ad": "^3.0.7",
     "reflect-metadata": "^0.1.10",
     "routing-controllers": "^0.7.0",
     "socket.io": "^2.0.3",

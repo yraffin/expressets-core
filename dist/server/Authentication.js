@@ -1,10 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const typedi_1 = require("typedi");
-const logging_1 = require("../core/logging");
+const AzureLoginStrategy_1 = require("./auth/AzureLoginStrategy");
+exports.IsLogged = AzureLoginStrategy_1.IsLogged;
 let Authentication = class Authentication {
     setupAuth(app) {
-        logging_1.logger.info('no authentication define.');
+        AzureLoginStrategy_1.setupB2CLoginAuth(app);
     }
 };
 Authentication = __decorate([
