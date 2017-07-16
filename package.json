@@ -5,7 +5,6 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "preinstall": "npm i nodemon node-inspector rimraf npm-run-all npm-check",
     "check": "npm-check --skip-unused",
     "start": "npm-run-all -s clean build",
     "clean": "rimraf dist/",

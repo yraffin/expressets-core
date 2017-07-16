@@ -11,3 +11,6 @@ This is base express framework to start quickly an api service.
 ### How To
  - Learning [Typescript](https://www.typescriptlang.org/)
  - Learning how to use **pleerock**'s library [routing-controllers](https://github.com/pleerock/routing-controllers) which help us creating our express server using typescript annotations.
+
+
+npm i nodemon node-inspector rimraf npm-run-all npm-check

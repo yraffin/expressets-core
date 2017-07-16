@@ -33,7 +33,7 @@ const users = [];
 function setupB2CLoginAuth(app) {
     const azureConfig = typedi_1.Container.get(configuration_1.Azure);
     const bearerStrategy = new passport_azure_ad_1.BearerStrategy({
-        identityMetadata: b2cConfig.creds.identityMetadata,
+        identityMetadata: `https://login.microsoftonline.com/${azureConfig.b2cTenantName}/v2.0/.well-known/openid-configuration`,
         clientID: azureConfig.b2cClientId,
         validateIssuer: b2cConfig.creds.validateIssuer,
         issuer: b2cConfig.creds.issuer,
