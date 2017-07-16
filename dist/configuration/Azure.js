@@ -66,7 +66,7 @@ class Azure {
     }
     /** Gets the B2C secret key. @property {string} */
     get b2cSecret() {
-        return process.env.AZURE_B2C_SECRET || this.b2cSecret;
+        return process.env.AZURE_B2C_SECRET || this._b2cSecret;
     }
     /** Sets the B2C secret key. @property {string} */
     set b2cSecret(value) {

@@ -111,7 +111,7 @@ export class Azure {
 
   /** Gets the B2C secret key. @property {string} */
   get b2cSecret() {
-    return process.env.AZURE_B2C_SECRET as string || this.b2cSecret;
+    return process.env.AZURE_B2C_SECRET as string || this._b2cSecret;
   }
   
   /** Sets the B2C secret key. @property {string} */
