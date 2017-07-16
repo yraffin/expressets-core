@@ -131,7 +131,7 @@ export class Azure {
 
   /** Gets the B2C scope. @property {string[]} */
   get b2cScope() {
-    return (process.env.AZURE_B2C_SCOPE as string).split(',') || this._b2cScope;
+    return process.env.AZURE_B2C_SCOPE? (process.env.AZURE_B2C_SCOPE as string).split(',') : this._b2cScope;
   }
   
   /** Sets the B2C scope. @property {string[]} */
