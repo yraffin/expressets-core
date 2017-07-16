@@ -1,10 +1,12 @@
 import * as express from 'express';
 import * as passport from 'passport';
+import * as config from 'config';
 import { BearerStrategy } from 'passport-azure-ad';
 import { Container } from 'typedi';
 import { logger } from '../../core/logging';
 import { UserModel, UsersService } from './users/UsersService';
-import * as config from './B2CLoginStrategyConfig';
+import * as b2cConfig from './B2CLoginStrategyConfig';
+import { Azure } from '../../configuration';
 
 async function findByOid(token, done) {
   const usersService = Container.get(UsersService);
@@ -31,17 +33,18 @@ async function findByOid(token, done) {
 
 const users = [];
 export function setupB2CLoginAuth(app: express.Express) {
+  const azureConfig = Container.get(Azure);
   const bearerStrategy = new BearerStrategy({
-    identityMetadata: config.creds.identityMetadata,
-    clientID: config.creds.clientID,
-    validateIssuer: config.creds.validateIssuer,
-    issuer: config.creds.issuer,
-    passReqToCallback: config.creds.passReqToCallback,
-    isB2C: config.creds.isB2C,
-    policyName: config.creds.policyName,
-    allowMultiAudiencesInToken: config.creds.allowMultiAudiencesInToken,
-    audience: config.creds.audience,
-    loggingLevel: config.creds.loggingLevel,
+    identityMetadata: b2cConfig.creds.identityMetadata,
+    clientID: azureConfig.b2cClientId,
+    validateIssuer: b2cConfig.creds.validateIssuer,
+    issuer: b2cConfig.creds.issuer,
+    passReqToCallback: b2cConfig.creds.passReqToCallback,
+    isB2C: b2cConfig.creds.isB2C,
+    policyName: azureConfig.b2cSigninStrategy,
+    allowMultiAudiencesInToken: b2cConfig.creds.allowMultiAudiencesInToken,
+    audience: b2cConfig.creds.audience,
+    loggingLevel: process.env.LOG_LEVEL || config.get('loglevel'),
   }, (token, done) => {
     logger.info(token, 'was the token retreived');
     if (!token.oid)

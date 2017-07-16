@@ -1,11 +1,13 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const passport = require("passport");
+const config = require("config");
 const passport_azure_ad_1 = require("passport-azure-ad");
 const typedi_1 = require("typedi");
 const logging_1 = require("../../core/logging");
 const UsersService_1 = require("./users/UsersService");
-const config = require("./B2CLoginStrategyConfig");
+const b2cConfig = require("./B2CLoginStrategyConfig");
+const configuration_1 = require("../../configuration");
 function findByOid(token, done) {
     return __awaiter(this, void 0, void 0, function* () {
         const usersService = typedi_1.Container.get(UsersService_1.UsersService);
@@ -29,17 +31,18 @@ function findByOid(token, done) {
 }
 const users = [];
 function setupB2CLoginAuth(app) {
+    const azureConfig = typedi_1.Container.get(configuration_1.Azure);
     const bearerStrategy = new passport_azure_ad_1.BearerStrategy({
-        identityMetadata: config.creds.identityMetadata,
-        clientID: config.creds.clientID,
-        validateIssuer: config.creds.validateIssuer,
-        issuer: config.creds.issuer,
-        passReqToCallback: config.creds.passReqToCallback,
-        isB2C: config.creds.isB2C,
-        policyName: config.creds.policyName,
-        allowMultiAudiencesInToken: config.creds.allowMultiAudiencesInToken,
-        audience: config.creds.audience,
-        loggingLevel: config.creds.loggingLevel,
+        identityMetadata: b2cConfig.creds.identityMetadata,
+        clientID: azureConfig.b2cClientId,
+        validateIssuer: b2cConfig.creds.validateIssuer,
+        issuer: b2cConfig.creds.issuer,
+        passReqToCallback: b2cConfig.creds.passReqToCallback,
+        isB2C: b2cConfig.creds.isB2C,
+        policyName: azureConfig.b2cSigninStrategy,
+        allowMultiAudiencesInToken: b2cConfig.creds.allowMultiAudiencesInToken,
+        audience: b2cConfig.creds.audience,
+        loggingLevel: process.env.LOG_LEVEL || config.get('loglevel'),
     }, (token, done) => {
         logging_1.logger.info(token, 'was the token retreived');
         if (!token.oid)
