@@ -1,20 +1,8 @@
 import { ObjectID, FindOneOptions, Cursor, Collection } from 'mongodb';
 import { Mongo } from '../server/Mongo';
 import { MongoModelBase } from './MongoModelBase';
-/**
- * Represents the pagination filter.
- * @class
- */
-export declare class PaginationFilter {
-    /** Represents the sort filter @property {any} */
-    filter?: any;
-    /** Represents the sort filter @property {string} */
-    sort?: string;
-    /** Represents the page number @property {number} */
-    page: number;
-    /** Represents the page limit @property {number} */
-    limit: number;
-}
+import { PaginationFilter } from './PaginationFilter';
+export { PaginationFilter };
 /**
  * Represents the base mongo service.
  * @class
@@ -152,7 +140,7 @@ export declare class MongoService<TDocument extends MongoModelBase> {
      * @param {string} sort The string query sort to deserialize.
      * @returns {string[][]}
      */
-    protected getQuerySort(sort: string): Array<string[]>;
+    protected getQuerySort(sort: string): string[][];
     /**
      * Prepare the filter query from pagination filter.
      * @method

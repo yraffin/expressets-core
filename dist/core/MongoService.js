@@ -3,13 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const typedi_1 = require("typedi");
 const mongodb_1 = require("mongodb");
 const Mongo_1 = require("../server/Mongo");
-/**
- * Represents the pagination filter.
- * @class
- */
-class PaginationFilter {
-}
-exports.PaginationFilter = PaginationFilter;
+const PaginationFilter_1 = require("./PaginationFilter");
+exports.PaginationFilter = PaginationFilter_1.PaginationFilter;
 /**
  * Represents the base mongo service.
  * @class
@@ -39,6 +34,7 @@ let MongoService = class MongoService {
             const query = col.find();
             this.preparePaginationQuery(query, pagination);
             const documents = yield query.toArray();
+            // tslint:disable-next-line:arrow-parens
             (documents || []).forEach(item => this.serialize(item));
             return documents;
         });
@@ -131,7 +127,7 @@ let MongoService = class MongoService {
         return __awaiter(this, void 0, void 0, function* () {
             const col = yield this.collection();
             const inserted = yield col.insertOne(document);
-            return this.get(inserted.insertedId.toHexString());
+            return yield this.get(inserted.insertedId.toHexString());
         });
     }
     /**
@@ -144,7 +140,7 @@ let MongoService = class MongoService {
         return __awaiter(this, void 0, void 0, function* () {
             const col = yield this.collection();
             const inserted = yield col.insertMany(documents);
-            return this.find({ _id: { $in: inserted.insertedIds } });
+            return yield this.find({ _id: { $in: inserted.insertedIds } });
         });
     }
     /**
@@ -162,7 +158,7 @@ let MongoService = class MongoService {
             delete document.id;
             const update = replace ? document : { $set: document };
             const updated = yield col.updateOne({ '_id': _id }, update);
-            return this.get(id);
+            return yield this.get(id);
         });
     }
     /**
@@ -237,9 +233,9 @@ let MongoService = class MongoService {
     save(document) {
         return __awaiter(this, void 0, void 0, function* () {
             if (document.id) {
-                return this.updateOne(document);
+                return yield this.updateOne(document);
             }
-            return this.insertOne(document);
+            return yield this.insertOne(document);
         });
     }
     /**
@@ -265,7 +261,7 @@ let MongoService = class MongoService {
             return null;
         }
         const querySort = [];
-        sort.split(',').forEach(column => {
+        sort.split(',').forEach((column) => {
             const parts = column.split(':');
             if (parts.length !== 2) {
                 throw new Error('sorting column format error : ' + column);

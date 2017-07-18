@@ -4,24 +4,9 @@ import * as _ from 'lodash';
 
 import { Mongo } from '../server/Mongo';
 import { MongoModelBase } from './MongoModelBase';
+import { PaginationFilter } from './PaginationFilter';
 
-/**
- * Represents the pagination filter.
- * @class
- */
-export class PaginationFilter {
-  /** Represents the sort filter @property {any} */
-  filter?: any;
-
-  /** Represents the sort filter @property {string} */
-  sort?: string;
-
-  /** Represents the page number @property {number} */
-  page: number;
-
-  /** Represents the page limit @property {number} */
-  limit: number;
-}
+export { PaginationFilter };
 
 /**
  * Represents the base mongo service.
@@ -59,6 +44,7 @@ export class MongoService<TDocument extends MongoModelBase> {
     const query = col.find() as Cursor<TDocument>;
     this.preparePaginationQuery(query, pagination);
     const documents = await query.toArray();
+    // tslint:disable-next-line:arrow-parens
     (documents || []).forEach(item => this.serialize(item));
     return documents;
   }
@@ -145,7 +131,7 @@ export class MongoService<TDocument extends MongoModelBase> {
   async insertOne(document: TDocument) {
     const col = await this.collection();
     const inserted = await col.insertOne(document);
-    return this.get(inserted.insertedId.toHexString());
+    return await this.get(inserted.insertedId.toHexString());
   }
 
   /**
@@ -157,7 +143,7 @@ export class MongoService<TDocument extends MongoModelBase> {
   async insertMany(documents: TDocument[]) {
     const col = await this.collection();
     const inserted = await col.insertMany(documents);
-    return this.find({ _id: { $in: inserted.insertedIds } });
+    return await this.find({ _id: { $in: inserted.insertedIds } });
   }
 
   /**
@@ -174,7 +160,7 @@ export class MongoService<TDocument extends MongoModelBase> {
     delete document.id;
     const update = replace ? document : { $set: document };
     const updated = await col.updateOne({ '_id': _id }, update);
-    return this.get(id);
+    return await this.get(id);
   }
 
   /**
@@ -244,10 +230,10 @@ export class MongoService<TDocument extends MongoModelBase> {
    */
   async save(document: TDocument) {
     if (document.id) {
-      return this.updateOne(document);
+      return await this.updateOne(document);
     }
 
-    return this.insertOne(document);
+    return await this.insertOne(document);
   }
 
   /**
@@ -270,13 +256,13 @@ export class MongoService<TDocument extends MongoModelBase> {
    * @param {string} sort The string query sort to deserialize.
    * @returns {string[][]}
    */
-  protected getQuerySort(sort: string): Array<string[]> {
+  protected getQuerySort(sort: string): string[][] {
     if (!sort || sort.replace(/ /gi, '') === '') {
       return null;
     }
 
     const querySort: string[][] = [];
-    sort.split(',').forEach(column => {
+    sort.split(',').forEach((column) => {
       const parts = column.split(':');
       if (parts.length !== 2) {
         throw new Error('sorting column format error : ' + column);
