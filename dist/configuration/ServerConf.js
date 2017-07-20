@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const config = require("config");
+const fs = require("fs");
 /**
  * Represents the application server configuration
  * @class
@@ -21,6 +22,28 @@ class ServerConf {
     /** Sets the socket origins. @property {string} */
     set socketOrigins(value) {
         this._socketOrigins = value;
+    }
+    /**
+     * Gets the ssl config for http2
+     * @method
+     */
+    get ssl() {
+        if (!process.env.SSL_KEY || !process.env.SSL_CRT) {
+            return null;
+        }
+        if (!fs.existsSync(process.env.SSL_KEY) || !fs.existsSync(process.env.SSL_CRT)) {
+            return null;
+        }
+        if (!this.fsSslKey) {
+            this.fsSslKey = fs.readFileSync(process.env.SSL_KEY);
+        }
+        if (!this.fsSslCrt) {
+            this.fsSslCrt = fs.readFileSync(process.env.SSL_CRT);
+        }
+        return {
+            key: this.fsSslKey,
+            cert: this.fsSslCrt
+        };
     }
     /**
      * Initializes the server configuration

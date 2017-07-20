@@ -35,6 +35,7 @@ function initializeProperties(property, value) {
 exports.initializeProperties = initializeProperties;
 function initializeStaticProperties(property, value) {
     function decorator(target, targetKey) {
+        // tslint:disable-next-line:max-classes-per-file
         const dynamicType = class {
         };
         if (!!targetKey) {

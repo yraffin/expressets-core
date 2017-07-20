@@ -27,7 +27,7 @@ let ErrorHandlerMiddleware = ErrorHandlerMiddleware_1 = class ErrorHandlerMiddle
                 });
             }
             else {
-                for (let key in err.constraints) {
+                for (const key of Object.keys(err.constraints)) {
                     // Get code error
                     const type = ErrorHandlerMiddleware_1.manageErrorType(key);
                     // Push in array
@@ -86,8 +86,10 @@ let ErrorHandlerMiddleware = ErrorHandlerMiddleware_1 = class ErrorHandlerMiddle
         }
         // Treat http errors
         if (error instanceof routing_controllers_1.HttpError) {
+            // tslint:disable-next-line:no-string-literal
             if (error['errors']) {
                 // Manage list of errors
+                // tslint:disable-next-line:no-string-literal
                 error['errors'].forEach((err) => {
                     ErrorHandlerMiddleware_1.manageError(err, errors);
                 });

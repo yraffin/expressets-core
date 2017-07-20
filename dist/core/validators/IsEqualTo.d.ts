@@ -21,4 +21,4 @@ export declare class IsEqualToConstraint implements ValidatorConstraintInterface
  * @param {ValidationOptions} validationOptions The validation options.
  * @returns {Function}
  */
-export declare function IsEqualTo(property: string, validationOptions?: ValidationOptions): (object: Object, propertyName: string) => void;
+export declare function IsEqualTo(property: string, validationOptions?: ValidationOptions): (object: any, propertyName: string) => void;

@@ -18,13 +18,14 @@ export class Socket {
 
     // include subscribers dynamically
     const files = glob.sync(serverConf.distPath + '/**/*Subscriber.js');
-    files.map(f => { return require(path.resolve(f)); });
+    files.map((f) => require(path.resolve(f)));
 
-    const options = {
+    const options: SocketIO.ServerOptions = {
       origins: serverConf.socketOrigins,
       path: `${serverConf.routePrefix}-socket`
-    } as SocketIO.ServerOptions;
-    let server = io(app, options);
+    };
+
+    const server = io(app, options);
 
     server.use(this.setupSocketAuthentication);
 
@@ -45,9 +46,9 @@ export class Socket {
       // bind applicable subscribers to the socket
       defaultMetadataRegistry
         .collectEventsHandlers
-        .forEach(eventHandler => {
+        .forEach((eventHandler) => {
           const eventNamesForThisHandler = Object.keys(eventHandler);
-          eventNamesForThisHandler.forEach(eventName => {
+          eventNamesForThisHandler.forEach((eventName) => {
             const callback = eventHandler[eventName];
             socket.on(eventName, (data) => {
               logger.debug(`Socket emitting event '${eventName}'`);

@@ -11,10 +11,6 @@ declare const creds: {
     issuer: any;
     passReqToCallback: boolean;
     useCookieInsteadOfSession: boolean;
-    cookieEncryptionKeys: {
-        'key': string;
-        'iv': string;
-    }[];
     scope: string[];
     loggingLevel: string;
     nonceLifetime: any;

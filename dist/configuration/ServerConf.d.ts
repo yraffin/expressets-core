@@ -19,11 +19,23 @@ export declare class ServerConf {
     distPath: string;
     /** The config routePrefix path */
     routePrefix: string;
+    /** The ssl key file */
+    fsSslKey: any;
+    /** The ssl key crt */
+    fsSslCrt: any;
     /** The socket origins */
     private _socketOrigins;
     /** Gets the socket origins. @property {string} */
     /** Sets the socket origins. @property {string} */
     socketOrigins: string;
+    /**
+     * Gets the ssl config for http2
+     * @method
+     */
+    readonly ssl: {
+        key: any;
+        cert: any;
+    };
     /**
      * Initializes the server configuration
      * @method

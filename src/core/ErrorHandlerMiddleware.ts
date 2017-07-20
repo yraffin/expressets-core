@@ -21,23 +21,23 @@ export class ErrorHandlerMiddleware implements ExpressErrorMiddlewareInterface {
   static manageError(err, errors, entity?) {
     // Validation error
     if (err instanceof ValidationError) {
-        // Get entity name 
-        if(!entity) {
-            entity = err.target.constructor.name.match(/[A-Z][a-z]+/g)[0].toLowerCase();
+      // Get entity name 
+      if (!entity) {
+        entity = err.target.constructor.name.match(/[A-Z][a-z]+/g)[0].toLowerCase();
+      }
+      // Treat error
+      if (err.children.length > 0) {
+        err.children.forEach((child) => {
+          ErrorHandlerMiddleware.manageError(child, errors, entity);
+        });
+      } else {
+        for (const key of Object.keys(err.constraints)) {
+          // Get code error
+          const type = ErrorHandlerMiddleware.manageErrorType(key);
+          // Push in array
+          errors.push(['error', entity, err.property, type].join('.'));
         }
-        // Treat error
-        if(err.children.length > 0) {
-            err.children.forEach((child) => {
-                ErrorHandlerMiddleware.manageError(child, errors, entity);
-            });
-        } else {
-            for (let key in err.constraints) {
-                // Get code error
-                const type = ErrorHandlerMiddleware.manageErrorType(key);
-                // Push in array
-                errors.push(['error', entity, err.property, type].join('.'));
-            }
-        }
+      }
     }
   }
   /**
@@ -95,10 +95,12 @@ export class ErrorHandlerMiddleware implements ExpressErrorMiddlewareInterface {
 
     // Treat http errors
     if (error instanceof HttpError) {
+      // tslint:disable-next-line:no-string-literal
       if (error['errors']) {
         // Manage list of errors
+        // tslint:disable-next-line:no-string-literal
         error['errors'].forEach((err) => {
-           ErrorHandlerMiddleware.manageError(err, errors);
+          ErrorHandlerMiddleware.manageError(err, errors);
         });
       } else {
         // Manage unique error

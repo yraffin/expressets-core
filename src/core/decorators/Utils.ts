@@ -5,6 +5,7 @@ import * as _ from 'lodash';
  * Represents a type which is constructable
  * @interface
  */
+// tslint:disable-next-line:interface-name
 export interface Class extends Function {
   new (...args: any[]): any;
 }
@@ -65,6 +66,7 @@ export function initializeStaticProperties(property: string | Map<string, string
   function decorator(target: Class): Class | void;
   function decorator(target: object, targetKey: string | symbol): void;
   function decorator(target: object, targetKey?: string | symbol): Class | void {
+    // tslint:disable-next-line:max-classes-per-file
     const dynamicType = class { };
     if (!!targetKey) {
       // property metadata

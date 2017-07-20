@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const appInsights = require("applicationinsights");
+const spdy = require("spdy");
 const routing_controllers_1 = require("routing-controllers");
 const typedi_1 = require("typedi");
 const Express_1 = require("./Express");
@@ -45,9 +46,11 @@ class Application {
             // create express config
             this.express = new Express_1.ExpressConfig();
             const ports = typedi_1.Container.get(configuration_1.Ports);
+            const serverConfig = typedi_1.Container.get(configuration_1.ServerConf);
             // Start Webserver
-            this.server = this.express.app.listen(ports.http, () => {
-                logging_1.logger.info(`
+            if (!serverConfig.ssl) {
+                this.server = this.express.app.listen(ports.http, () => {
+                    logging_1.logger.info(`
         ------------
         Server Started!
 
@@ -59,7 +62,24 @@ class Application {
         API Spec: http://localhost:${ports.http}/api-docs
         ------------
       `);
-            });
+                });
+            }
+            else {
+                this.server = spdy.createServer(serverConfig.ssl, this.express.app).listen(ports.http, () => {
+                    logging_1.logger.info(`
+        ------------
+        Server Started in with spdy!
+
+        Https: https://localhost:${ports.http}
+        Debugger: http://127.0.0.1:${ports.http}/?ws=127.0.0.1:${ports.http}&port=${ports.debug}
+        Health: http://localhost:${ports.http}/ping
+
+        API Docs: http://localhost:${ports.http}/docs
+        API Spec: http://localhost:${ports.http}/api-docs
+        ------------
+      `);
+                });
+            }
             // Start Websockets
             const socket = typedi_1.Container.get(Socket_1.Socket);
             socket.setupSockets(this.server);

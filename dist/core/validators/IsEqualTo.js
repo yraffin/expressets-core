@@ -39,10 +39,10 @@ exports.IsEqualToConstraint = IsEqualToConstraint;
  * @returns {Function}
  */
 function IsEqualTo(property, validationOptions) {
-    return function (object, propertyName) {
+    return (object, propertyName) => {
         class_validator_1.registerDecorator({
             target: object.constructor,
-            propertyName: propertyName,
+            propertyName,
             options: validationOptions,
             constraints: [property],
             validator: IsEqualToConstraint

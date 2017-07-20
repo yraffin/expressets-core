@@ -43,7 +43,7 @@ export declare class MongoService<TDocument extends MongoModelBase> {
      * @param {PaginationFilter} pagination The requested pagination filter.
      * @returns {Promise<TDocument[]>}
      */
-    filter(query: any, projection: Object, pagination?: PaginationFilter): Promise<TDocument[]>;
+    filter(query: any, projection: any, pagination?: PaginationFilter): Promise<TDocument[]>;
     /**
      * Gets the number of collection documents depends on query and pagination filter.
      * @method
@@ -66,7 +66,7 @@ export declare class MongoService<TDocument extends MongoModelBase> {
      * @param {FindOneOptions} options The request options.
      * @returns {Promise<TDocument>}
      */
-    findOne(filter: Object, options?: FindOneOptions): Promise<TDocument>;
+    findOne(filter: any, options?: FindOneOptions): Promise<TDocument>;
     /**
      * Insert one document to the collection.
      * @method

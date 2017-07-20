@@ -52,7 +52,7 @@ let MongoService = class MongoService {
             const cursor = col.find(query);
             this.preparePaginationQuery(cursor, pagination);
             const documents = yield cursor.toArray();
-            (documents || []).forEach(item => this.serialize(item));
+            (documents || []).forEach((item) => this.serialize(item));
             return documents;
         });
     }
@@ -71,7 +71,7 @@ let MongoService = class MongoService {
             let cursor = col.find(query);
             cursor = this.preparePaginationQuery(cursor, pagination);
             const documents = yield cursor.project(projection).toArray();
-            (documents || []).forEach(item => this.serialize(item));
+            (documents || []).forEach((item) => this.serialize(item));
             return documents;
         });
     }
@@ -157,7 +157,7 @@ let MongoService = class MongoService {
             const _id = mongodb_1.ObjectID.createFromHexString(id);
             delete document.id;
             const update = replace ? document : { $set: document };
-            const updated = yield col.updateOne({ '_id': _id }, update);
+            const updated = yield col.updateOne({ _id }, update);
             return yield this.get(id);
         });
     }
@@ -171,7 +171,7 @@ let MongoService = class MongoService {
         return __awaiter(this, void 0, void 0, function* () {
             const col = yield this.collection();
             const _id = mongodb_1.ObjectID.createFromHexString(id);
-            const result = yield col.deleteOne({ _id: _id });
+            const result = yield col.deleteOne({ _id });
             return result.deletedCount;
         });
     }
@@ -202,8 +202,8 @@ let MongoService = class MongoService {
             const _id = mongodb_1.ObjectID.createFromHexString(document.id);
             const $push = {};
             $push[field] = value;
-            const push = { $push: $push };
-            yield col.updateOne({ '_id': _id }, push);
+            const push = { $push };
+            yield col.updateOne({ _id }, push);
         });
     }
     /**
@@ -220,8 +220,8 @@ let MongoService = class MongoService {
             const _id = mongodb_1.ObjectID.createFromHexString(document.id);
             const $pull = {};
             $pull[field] = value;
-            const pull = { $pull: $pull };
-            yield col.updateOne({ '_id': _id }, pull);
+            const pull = { $pull };
+            yield col.updateOne({ _id }, pull);
         });
     }
     /**

@@ -1,5 +1,3 @@
-/// <reference types="node" />
-import * as http from 'http';
 import { Db } from 'mongodb';
 import { ExpressConfig } from './Express';
 import { Mongo } from './Mongo';
@@ -10,7 +8,7 @@ import { AppConfig } from '../configuration';
  */
 export declare class Application {
     /** The express http server. @property {http.Server} */
-    server: http.Server;
+    server: any;
     /** The express configuration @property {ExpressConfig} */
     express: ExpressConfig;
     /** The mongo client @property {Mongo} */

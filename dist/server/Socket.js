@@ -17,12 +17,12 @@ class Socket {
         const serverConf = typedi_1.Container.get(configuration_1.ServerConf);
         // include subscribers dynamically
         const files = glob.sync(serverConf.distPath + '/**/*Subscriber.js');
-        files.map(f => { return require(path.resolve(f)); });
+        files.map((f) => require(path.resolve(f)));
         const options = {
             origins: serverConf.socketOrigins,
             path: `${serverConf.routePrefix}-socket`
         };
-        let server = io(app, options);
+        const server = io(app, options);
         server.use(this.setupSocketAuthentication);
         server.on('connection', (socket) => {
             logging_1.logger.info('Web Sockets initalized');
@@ -38,9 +38,9 @@ class Socket {
             // bind applicable subscribers to the socket
             MetadataRegistry_1.defaultMetadataRegistry
                 .collectEventsHandlers
-                .forEach(eventHandler => {
+                .forEach((eventHandler) => {
                 const eventNamesForThisHandler = Object.keys(eventHandler);
-                eventNamesForThisHandler.forEach(eventName => {
+                eventNamesForThisHandler.forEach((eventName) => {
                     const callback = eventHandler[eventName];
                     socket.on(eventName, (data) => {
                         logging_1.logger.debug(`Socket emitting event '${eventName}'`);

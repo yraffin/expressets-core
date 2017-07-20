@@ -61,7 +61,7 @@ export class MongoService<TDocument extends MongoModelBase> {
     const cursor = col.find(query) as Cursor<TDocument>;
     this.preparePaginationQuery(cursor, pagination);
     const documents = await cursor.toArray();
-    (documents || []).forEach(item => this.serialize(item));
+    (documents || []).forEach((item) => this.serialize(item));
     return documents;
   }
 
@@ -74,12 +74,12 @@ export class MongoService<TDocument extends MongoModelBase> {
    * @param {PaginationFilter} pagination The requested pagination filter.
    * @returns {Promise<TDocument[]>}
    */
-  async filter(query: any, projection: Object, pagination?: PaginationFilter) {
+  async filter(query: any, projection: any, pagination?: PaginationFilter) {
     const col = await this.collection();
     let cursor = col.find(query) as Cursor<TDocument>;
     cursor = this.preparePaginationQuery(cursor, pagination);
     const documents = await cursor.project(projection).toArray();
-    (documents || []).forEach(item => this.serialize(item));
+    (documents || []).forEach((item) => this.serialize(item));
     return documents;
   }
 
@@ -115,7 +115,7 @@ export class MongoService<TDocument extends MongoModelBase> {
    * @param {FindOneOptions} options The request options.
    * @returns {Promise<TDocument>}
    */
-  async findOne(filter: Object, options?: FindOneOptions) {
+  async findOne(filter: any, options?: FindOneOptions) {
     const col = await this.collection();
     const document = await col.findOne(filter, options) as TDocument;
     this.serialize(document);
@@ -159,7 +159,7 @@ export class MongoService<TDocument extends MongoModelBase> {
     const _id = ObjectID.createFromHexString(id);
     delete document.id;
     const update = replace ? document : { $set: document };
-    const updated = await col.updateOne({ '_id': _id }, update);
+    const updated = await col.updateOne({ _id }, update);
     return await this.get(id);
   }
 
@@ -172,7 +172,7 @@ export class MongoService<TDocument extends MongoModelBase> {
   async removeOne(id: string) {
     const col = await this.collection();
     const _id = ObjectID.createFromHexString(id);
-    const result = await col.deleteOne({ _id: _id });
+    const result = await col.deleteOne({ _id });
     return result.deletedCount;
   }
 
@@ -201,8 +201,8 @@ export class MongoService<TDocument extends MongoModelBase> {
     const _id = ObjectID.createFromHexString(document.id);
     const $push = {};
     $push[field] = value;
-    const push = { $push: $push };
-    await col.updateOne({ '_id': _id }, push);
+    const push = { $push };
+    await col.updateOne({ _id }, push);
   }
 
   /**
@@ -218,8 +218,8 @@ export class MongoService<TDocument extends MongoModelBase> {
     const _id = ObjectID.createFromHexString(document.id);
     const $pull = {};
     $pull[field] = value;
-    const pull = { $pull: $pull };
-    await col.updateOne({ '_id': _id }, pull);
+    const pull = { $pull };
+    await col.updateOne({ _id }, pull);
   }
 
   /**

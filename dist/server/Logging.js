@@ -20,7 +20,6 @@ function setupLogging(app) {
     setupExpress(app);
 }
 exports.setupLogging = setupLogging;
-;
 function setupExpress(app) {
     // error logging
     if (level === 'debug') {
@@ -45,5 +44,4 @@ function setupExpress(app) {
         }));
     }
 }
-;
 //# sourceMappingURL=Logging.js.map

@@ -1,5 +1,6 @@
 import * as http from 'http';
 import * as appInsights from 'applicationinsights';
+import * as spdy from 'spdy';
 import { Db } from 'mongodb';
 import { useContainer } from 'routing-controllers';
 import { Container } from 'typedi';
@@ -7,7 +8,7 @@ import { Container } from 'typedi';
 import { ExpressConfig } from './Express';
 import { logger } from '../core/logging';
 import { Mongo } from './Mongo';
-import { Ports, initializeAppConfig, AppConfig, Azure } from '../configuration';
+import { Ports, ServerConf, initializeAppConfig, AppConfig, Azure } from '../configuration';
 import { Socket } from './Socket';
 
 /**
@@ -17,7 +18,7 @@ import { Socket } from './Socket';
 export class Application {
 
   /** The express http server. @property {http.Server} */
-  server: http.Server;
+  server: any;
 
   /** The express configuration @property {ExpressConfig} */
   express: ExpressConfig;
@@ -62,9 +63,11 @@ export class Application {
 
     const ports = Container.get(Ports);
 
+    const serverConfig = Container.get(ServerConf);
     // Start Webserver
-    this.server = this.express.app.listen(ports.http, () => {
-      logger.info(`
+    if (!serverConfig.ssl) {
+      this.server = this.express.app.listen(ports.http, () => {
+        logger.info(`
         ------------
         Server Started!
 
@@ -76,7 +79,23 @@ export class Application {
         API Spec: http://localhost:${ports.http}/api-docs
         ------------
       `);
-    });
+      });
+    } else {
+      this.server = spdy.createServer(serverConfig.ssl, this.express.app as any).listen(ports.http, () => {
+        logger.info(`
+        ------------
+        Server Started in with spdy!
+
+        Https: https://localhost:${ports.http}
+        Debugger: http://127.0.0.1:${ports.http}/?ws=127.0.0.1:${ports.http}&port=${ports.debug}
+        Health: http://localhost:${ports.http}/ping
+
+        API Docs: http://localhost:${ports.http}/docs
+        API Spec: http://localhost:${ports.http}/api-docs
+        ------------
+      `);
+      });
+    }
 
     // Start Websockets
     const socket = Container.get(Socket);

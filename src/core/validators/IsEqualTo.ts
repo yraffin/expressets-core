@@ -44,10 +44,10 @@ export class IsEqualToConstraint implements ValidatorConstraintInterface {
  * @returns {Function}
  */
 export function IsEqualTo(property: string, validationOptions?: ValidationOptions) {
-  return function (object: Object, propertyName: string) {
+  return (object: any, propertyName: string) => {
     registerDecorator({
       target: object.constructor,
-      propertyName: propertyName,
+      propertyName,
       options: validationOptions,
       constraints: [property],
       validator: IsEqualToConstraint
