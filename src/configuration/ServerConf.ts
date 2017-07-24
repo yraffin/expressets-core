@@ -13,6 +13,9 @@ export interface IServerConf {
 
   /** Gets or sets the api socket origins. @property {string} */
   socketOrigins?: string;
+
+  /** Gets or sets a value indicating whether server is launch for testing. @property {boolean} */
+  isTesting?: boolean;
 }
 
 /**
@@ -34,6 +37,19 @@ export class ServerConf {
 
   /** The socket origins */
   private _socketOrigins = config.get<string>('socket_origins') || '*:*';
+
+  /** Gets or sets a value indicating whether server is launch for testing. @property {boolean} */
+  private _isTesting = false;
+
+  /** Gets a value indicating whether server is launch for testing. @property {boolean} */
+  get isTesting() {
+    return this._isTesting;
+  }
+
+  /** Sets a value indicating whether server is launch for testing. @property {boolean} */
+  set isTesting(value: boolean) {
+    this._isTesting = value;
+  }
 
   /** Gets the socket origins. @property {string} */
   get socketOrigins() {
@@ -80,5 +96,6 @@ export class ServerConf {
     this.distPath = options.distPath || this.distPath;
     this.routePrefix = options.routePrefix || this.routePrefix;
     this.socketOrigins = options.socketOrigins || this.socketOrigins;
+    this.isTesting = options.isTesting || this.isTesting;
   }
 }

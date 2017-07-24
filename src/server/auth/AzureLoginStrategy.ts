@@ -6,7 +6,7 @@ import { Container } from 'typedi';
 import { logger } from '../../core/logging';
 import { UserModel, UsersService } from './users/UsersService';
 import * as b2cConfig from './B2CLoginStrategyConfig';
-import { Azure } from '../../configuration';
+import { Azure, ServerConf } from '../../configuration';
 
 async function findByOid(token, done) {
   const usersService = Container.get(UsersService);
@@ -35,6 +35,7 @@ const users = [];
 export function setupB2CLoginAuth(app: express.Express) {
   const azureConfig = Container.get(Azure);
   const bearerStrategy = new BearerStrategy({
+    // tslint:disable-next-line:max-line-length
     identityMetadata: `https://login.microsoftonline.com/${azureConfig.b2cTenantName}/v2.0/.well-known/openid-configuration`,
     clientID: azureConfig.b2cClientId,
     validateIssuer: b2cConfig.creds.validateIssuer,
@@ -59,4 +60,18 @@ export function setupB2CLoginAuth(app: express.Express) {
   passport.use(bearerStrategy);
 }
 
-export const IsLogged = passport.authenticate('oauth-bearer', { session: false });
+// tslint:disable-next-line:variable-name
+export const IsLogged = (req, res, next) => {
+  const serverConf = Container.get(ServerConf);
+  if (!serverConf.isTesting) {
+    return passport.authenticate('oauth-bearer', { session: false })(req, res, next);
+  }
+
+  req.user = {
+    email: 'test@test.test',
+    firstname: 'test',
+    lastname: 'API'
+  };
+
+  return next();
+};

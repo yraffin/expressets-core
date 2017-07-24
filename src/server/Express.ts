@@ -29,8 +29,6 @@ export class ExpressConfig {
     const swagger = Container.get(Swagger);
     swagger.setupSwagger(this.app);
 
-    setupLogging(this.app);
-
     this.app.use(bodyParser.json());
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(cors());
@@ -63,6 +61,8 @@ export class ExpressConfig {
     authentication.setupAuth(this.app);
 
     this.setupControllers();
+    
+    setupLogging(this.app);
   }
 
   setupControllers() {
