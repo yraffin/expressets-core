@@ -44,14 +44,17 @@ export class Application {
     // setup DI Container
     useContainer(Container);
 
+    const serverConfig = Container.get(ServerConf);
     // setup app insite Azure
-    const azure = Container.get(Azure);
-    appInsights.setup(azure.appInsights)
-      .setAutoCollectRequests(true)
-      .setAutoCollectPerformance(true)
-      .setAutoCollectExceptions(true)
-      .setAutoCollectConsole(true)
-      .start();
+    if (!serverConfig.isTesting) {
+      const azure = Container.get(Azure);
+      appInsights.setup(azure.appInsights)
+        .setAutoCollectRequests(true)
+        .setAutoCollectPerformance(true)
+        .setAutoCollectExceptions(true)
+        .setAutoCollectConsole(true)
+        .start();
+    }
 
     // create mongo connection
     logger.info('Attending to connect to mongodb');
@@ -63,7 +66,6 @@ export class Application {
 
     const ports = Container.get(Ports);
 
-    const serverConfig = Container.get(ServerConf);
     // Start Webserver
     if (!serverConfig.ssl) {
       this.server = this.express.app.listen(ports.http, () => {

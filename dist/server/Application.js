@@ -31,14 +31,17 @@ class Application {
         return __awaiter(this, void 0, void 0, function* () {
             // setup DI Container
             routing_controllers_1.useContainer(typedi_1.Container);
+            const serverConfig = typedi_1.Container.get(configuration_1.ServerConf);
             // setup app insite Azure
-            const azure = typedi_1.Container.get(configuration_1.Azure);
-            appInsights.setup(azure.appInsights)
-                .setAutoCollectRequests(true)
-                .setAutoCollectPerformance(true)
-                .setAutoCollectExceptions(true)
-                .setAutoCollectConsole(true)
-                .start();
+            if (!serverConfig.isTesting) {
+                const azure = typedi_1.Container.get(configuration_1.Azure);
+                appInsights.setup(azure.appInsights)
+                    .setAutoCollectRequests(true)
+                    .setAutoCollectPerformance(true)
+                    .setAutoCollectExceptions(true)
+                    .setAutoCollectConsole(true)
+                    .start();
+            }
             // create mongo connection
             logging_1.logger.info('Attending to connect to mongodb');
             yield this.createDbConnection();
@@ -46,7 +49,6 @@ class Application {
             // create express config
             this.express = new Express_1.ExpressConfig();
             const ports = typedi_1.Container.get(configuration_1.Ports);
-            const serverConfig = typedi_1.Container.get(configuration_1.ServerConf);
             // Start Webserver
             if (!serverConfig.ssl) {
                 this.server = this.express.app.listen(ports.http, () => {
