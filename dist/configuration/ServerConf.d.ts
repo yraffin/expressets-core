@@ -9,6 +9,8 @@ export interface IServerConf {
     routePrefix?: string;
     /** Gets or sets the api socket origins. @property {string} */
     socketOrigins?: string;
+    /** Gets or sets a value indicating whether server is launch for testing. @property {boolean} */
+    isTesting?: boolean;
 }
 /**
  * Represents the application server configuration
@@ -25,6 +27,11 @@ export declare class ServerConf {
     fsSslCrt: any;
     /** The socket origins */
     private _socketOrigins;
+    /** Gets or sets a value indicating whether server is launch for testing. @property {boolean} */
+    private _isTesting;
+    /** Gets a value indicating whether server is launch for testing. @property {boolean} */
+    /** Sets a value indicating whether server is launch for testing. @property {boolean} */
+    isTesting: boolean;
     /** Gets the socket origins. @property {string} */
     /** Sets the socket origins. @property {string} */
     socketOrigins: string;

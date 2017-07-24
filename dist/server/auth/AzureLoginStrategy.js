@@ -33,6 +33,7 @@ const users = [];
 function setupB2CLoginAuth(app) {
     const azureConfig = typedi_1.Container.get(configuration_1.Azure);
     const bearerStrategy = new passport_azure_ad_1.BearerStrategy({
+        // tslint:disable-next-line:max-line-length
         identityMetadata: `https://login.microsoftonline.com/${azureConfig.b2cTenantName}/v2.0/.well-known/openid-configuration`,
         clientID: azureConfig.b2cClientId,
         validateIssuer: b2cConfig.creds.validateIssuer,
@@ -55,5 +56,17 @@ function setupB2CLoginAuth(app) {
     passport.use(bearerStrategy);
 }
 exports.setupB2CLoginAuth = setupB2CLoginAuth;
-exports.IsLogged = passport.authenticate('oauth-bearer', { session: false });
+// tslint:disable-next-line:variable-name
+exports.IsLogged = (req, res, next) => {
+    const serverConf = typedi_1.Container.get(configuration_1.ServerConf);
+    if (!serverConf.isTesting) {
+        return passport.authenticate('oauth-bearer', { session: false })(req, res, next);
+    }
+    req.user = {
+        email: 'test@test.test',
+        firstname: 'test',
+        lastname: 'API'
+    };
+    return next();
+};
 //# sourceMappingURL=AzureLoginStrategy.js.map

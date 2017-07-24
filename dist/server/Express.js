@@ -24,7 +24,6 @@ class ExpressConfig {
         // setup auth
         const swagger = typedi_1.Container.get(Swagger_1.Swagger);
         swagger.setupSwagger(this.app);
-        Logging_1.setupLogging(this.app);
         this.app.use(bodyParser.json());
         this.app.use(bodyParser.urlencoded({ extended: false }));
         this.app.use(cors());
@@ -53,6 +52,7 @@ class ExpressConfig {
         const authentication = typedi_1.Container.get(Authentication_1.Authentication);
         authentication.setupAuth(this.app);
         this.setupControllers();
+        Logging_1.setupLogging(this.app);
     }
     setupControllers() {
         const server = typedi_1.Container.get(configuration_1.ServerConf);

@@ -14,6 +14,16 @@ class ServerConf {
         this.routePrefix = '/api';
         /** The socket origins */
         this._socketOrigins = config.get('socket_origins') || '*:*';
+        /** Gets or sets a value indicating whether server is launch for testing. @property {boolean} */
+        this._isTesting = false;
+    }
+    /** Gets a value indicating whether server is launch for testing. @property {boolean} */
+    get isTesting() {
+        return this._isTesting;
+    }
+    /** Sets a value indicating whether server is launch for testing. @property {boolean} */
+    set isTesting(value) {
+        this._isTesting = value;
     }
     /** Gets the socket origins. @property {string} */
     get socketOrigins() {
@@ -54,6 +64,7 @@ class ServerConf {
         this.distPath = options.distPath || this.distPath;
         this.routePrefix = options.routePrefix || this.routePrefix;
         this.socketOrigins = options.socketOrigins || this.socketOrigins;
+        this.isTesting = options.isTesting || this.isTesting;
     }
 }
 exports.ServerConf = ServerConf;
